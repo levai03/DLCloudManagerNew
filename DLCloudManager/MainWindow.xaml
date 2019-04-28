@@ -1,0 +1,79 @@
+﻿<Window x:Class="DLCloudManager.MainWindow" Loaded="Window_Loaded"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DLCloudManager"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="1045" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFD1CACA" Offset="0"/>
+                <GradientStop Color="#FFC73E3E" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <TextBox Name="Tb1" Text="{Binding Path=ActualDirectory1}" KeyDown="Tb1_KeyDown" KeyboardNavigation.IsTabStop="False" HorizontalAlignment="Left" Height="23" Margin="130,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"/>
+        <TextBox Name="Tb2" Text="{Binding Path=ActualDirectory2}" KeyDown="Tb2_KeyDown" KeyboardNavigation.IsTabStop="False" HorizontalAlignment="Left" Height="23" Margin="549,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"/>
+        <Button Name="Bt1" Command="{Binding Path=Listing1Command}" KeyboardNavigation.IsTabStop="False" Content="OK" HorizontalAlignment="Left" Height="23" Margin="465,24,0,0" VerticalAlignment="Top" Width="21"/>
+        <Button Name="Bt2" Command="{Binding Path=Listing2Command}" KeyboardNavigation.IsTabStop="False" Content="OK" HorizontalAlignment="Left" Height="23" Margin="892,23,0,0" VerticalAlignment="Top" Width="21"/>
+        <ListView ItemsSource="{Binding Path=FilesAndDirectories1}" SelectionChanged="OnSelectionChanged" Name="Lw1" MouseDoubleClick="OnMouseDoubleClick" HorizontalAlignment="Left" Height="276" Margin="130,63,0,0" VerticalAlignment="Top" Width="327" GotFocus="OnGotFocus">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding ImgSource}"/>
+                                    <TextBlock x:Name="Name" Text="{Binding NameOfLocal}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="Ext" Header="Ext" Width="30" DisplayMemberBinding="{Binding ExtensionOfLocal}"></GridViewColumn>
+                    <GridViewColumn x:Name="Size" Header="Size" Width="40" DisplayMemberBinding="{Binding SizeOfLocal}"></GridViewColumn>
+                    <GridViewColumn x:Name="Date" Header="Date" Width="40" DisplayMemberBinding="{Binding DateOfCreation}"></GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+        <ListView Name="Lw2" ItemsSource="{Binding Path=FilesAndDirectories2}" SelectionChanged="OnSelectionChanged" MouseDoubleClick="OnMouseDoubleClick" HorizontalAlignment="Left" Height="276" Margin="549,63,0,0" VerticalAlignment="Top" Width="327" GotFocus="OnGotFocus">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" >
+                                    <Image Source="{Binding ImgSource}"/>
+                                    <TextBlock Width="100" x:Name="Name2" Text="{Binding NameOfLocal}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="Ext2" Header="Ext" Width="30" DisplayMemberBinding="{Binding ExtensionOfLocal}"></GridViewColumn>
+                    <GridViewColumn x:Name="Size2" Header="Size" Width="40" DisplayMemberBinding="{Binding SizeOfLocal}"></GridViewColumn>
+                    <GridViewColumn x:Name="Date2" Header="Date" Width="40" DisplayMemberBinding="{Binding DateOfCreation}"></GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Name="Cp_Button" Command="{Binding Path=CopyCommand}" HorizontalAlignment="Left" Margin="490,63,0,0" VerticalAlignment="Top" Width="21" Content="" Height="23" MouseLeave="Cp_Button_MouseLeave" >
+            <Button.Background>
+                <ImageBrush Stretch="None" ImageSource="img/42.png"/>
+            </Button.Background>
+
+        </Button>
+        <Button Command="{Binding Path=MoveCommand}" Content="M" HorizontalAlignment="Left" Margin="490,105,0,0" VerticalAlignment="Top" Width="21"/>
+        <Button Name="DeleteBtn" Command="{Binding Path=DeleteCommand}" Content="Delete" HorizontalAlignment="Left" Margin="490,147,0,0" VerticalAlignment="Top" Width="21"/>
+        <Button Name="RenameBtn" Command="{Binding Path=RenameCommand}" Content="Rename" HorizontalAlignment="Left" Margin="490,185,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.524,0.545"/>
+        <Button Name="NewDirBtn" Command="{Binding Path=CreateDirectoryCommand}" Content="New" HorizontalAlignment="Left" Margin="490,225,0,0" VerticalAlignment="Top" Width="21"/>
+        <Button Name="NewTxt" Click="NewTxt_Click"  Content="T" HorizontalAlignment="Left" Margin="490,317,0,0" VerticalAlignment="Top" Width="21"/>
+        <Button Name="Drive" Click="Drive_Click" Content="D" HorizontalAlignment="Left" Margin="104,23,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,0.5"/>
+        <Button Name="Drive2" Click="Drive2_Click"  Content="D" HorizontalAlignment="Left" Margin="516,25,0,0" VerticalAlignment="Top" Width="21"/>
+        <Button Name="GDrive1" Click="GDrive1_Click" Content="Button" HorizontalAlignment="Left" Margin="25,88,0,0" VerticalAlignment="Top" Width="42" Height="39"/>
+
+    </Grid>
+
+</Window>
