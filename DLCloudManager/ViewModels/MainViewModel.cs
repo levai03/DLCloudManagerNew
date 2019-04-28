@@ -22,6 +22,7 @@ namespace DLCloudManager.ViewModels
         private readonly DelegateCommand _deleteCommand;
         private readonly DelegateCommand _renameCommand;
         private readonly DelegateCommand _createDirectoryCommand;
+        private readonly DelegateCommand _createTxtCommand;
         public ICommand Listing1Command => _listing1Command;
         public ICommand Listing2Command => _listing2Command;
         public ICommand CopyCommand => _copyCommand;
@@ -29,6 +30,7 @@ namespace DLCloudManager.ViewModels
         public ICommand DeleteCommand => _deleteCommand;
         public ICommand RenameCommand => _renameCommand;
         public ICommand CreateDirectoryCommand => _createDirectoryCommand;
+        public ICommand CreateTxtCommand => _createTxtCommand;
         public MainViewModel()
         {
             PrevDirectory1 = "C:\\";
@@ -49,6 +51,7 @@ namespace DLCloudManager.ViewModels
             _deleteCommand = new DelegateCommand(OnDelete);
             _renameCommand = new DelegateCommand(OnRename);
             _createDirectoryCommand = new DelegateCommand(OnCreateNewDir);
+            _createTxtCommand = new DelegateCommand(OnNewTxt);
         }
 
         //Osztályszintű változók
@@ -202,7 +205,10 @@ namespace DLCloudManager.ViewModels
         }
         private void OnDelete(object commandParameter)
         {
-            FileBasics.DeleteMultipleElement(selectedItemList);
+            if (selectedItemList !=null)
+            {
+                FileBasics.DeleteMultipleElement(selectedItemList);
+            }
             if (activeListview == 1)
             {
                 OnListing1(commandParameter);
@@ -221,7 +227,7 @@ namespace DLCloudManager.ViewModels
             tempWindow.ShowDialog();
 
 
-            if (!tempName.Equals(""))
+            if (!tempName.Equals("") && selectedItemList != null)
             {
                 Local tempItem = selectedItemList.First();
                 if (activeListview == 1)
@@ -238,7 +244,7 @@ namespace DLCloudManager.ViewModels
             }
             else if (tempWindow.DialogResult == true)
             {
-                MessageBox.Show("Name is empty.", "Renaming Failed");
+                MessageBox.Show("Name is empty or there isn't any selected document.", "Renaming Failed");
             }
         }
         private void OnCreateNewDir(object commandParameter)
@@ -267,6 +273,25 @@ namespace DLCloudManager.ViewModels
                 MessageBox.Show("Name is empty.", "Creation Failed");
             }
         }
+        private void OnNewTxt(object commandParametere)
+        {
+            FileBasics.CreateNewTxtFile();
+            FilesAndDirectories1 = FileBasics.FullListing(ref actualDirectory1, ref directories1, ref files1, ref prevDirectory1, F);
+            FilesAndDirectories2 = FileBasics.FullListing(ref actualDirectory2, ref directories2, ref files2, ref prevDirectory2, F);
+        }
+        public void OnListDrive(int panelNumber)
+        {
+            if (panelNumber == 1)
+            {
+                FilesAndDirectories1 = FileBasics.FindDrives();
+                ActualDirectory1 = "Drives";
+            }
+            else
+            {
+                FilesAndDirectories2 = FileBasics.FindDrives();
+                ActualDirectory2 = "Drives";
+            }
+        }
         private void NameAdded(object sender, EventArgs e)
         {
             tempName = tempWindow.TempName;
@@ -274,6 +299,7 @@ namespace DLCloudManager.ViewModels
         /// <summary>
         /// Segéd metódus az átnevezéshez és az új könyvtár létrehozásához
         /// </summary>
+        
 
 
         //Tulajdonság figyelő

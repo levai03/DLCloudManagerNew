@@ -69,9 +69,9 @@
         <Button Name="DeleteBtn" Command="{Binding Path=DeleteCommand}" Content="Delete" HorizontalAlignment="Left" Margin="490,147,0,0" VerticalAlignment="Top" Width="21"/>
         <Button Name="RenameBtn" Command="{Binding Path=RenameCommand}" Content="Rename" HorizontalAlignment="Left" Margin="490,185,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.524,0.545"/>
         <Button Name="NewDirBtn" Command="{Binding Path=CreateDirectoryCommand}" Content="New" HorizontalAlignment="Left" Margin="490,225,0,0" VerticalAlignment="Top" Width="21"/>
-        <Button Name="NewTxt" Click="NewTxt_Click"  Content="T" HorizontalAlignment="Left" Margin="490,317,0,0" VerticalAlignment="Top" Width="21"/>
+        <Button Name="NewTxt" Command="{Binding Path=CreateTxtCommand}"  Content="T" HorizontalAlignment="Left" Margin="490,317,0,0" VerticalAlignment="Top" Width="21"/>
         <Button Name="Drive" Click="Drive_Click" Content="D" HorizontalAlignment="Left" Margin="104,23,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,0.5"/>
-        <Button Name="Drive2" Click="Drive2_Click"  Content="D" HorizontalAlignment="Left" Margin="516,25,0,0" VerticalAlignment="Top" Width="21"/>
+        <Button Name="Drive2" Click="Drive_Click"  Content="D" HorizontalAlignment="Left" Margin="516,25,0,0" VerticalAlignment="Top" Width="21"/>
         <Button Name="GDrive1" Click="GDrive1_Click" Content="Button" HorizontalAlignment="Left" Margin="25,88,0,0" VerticalAlignment="Top" Width="42" Height="39"/>
 
     </Grid>

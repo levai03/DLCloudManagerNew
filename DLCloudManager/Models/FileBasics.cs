@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -144,16 +145,11 @@ namespace DLCloudManager.Models
                 FilesAndDirectories = FullListing(ref actualDir, ref directories, ref files, ref prevDir, F);
             }
             else if (selectedItem.ExtensionOfLocal.Equals("drive"))
-            {/*
-                try
-                {
-                    TBox.Text = selectedItem.PathOfLocal;
-                    ListingToListView(ref TBox, ref directories, ref files, ref actualDir, ref Lw);
-                }
-                catch (UnauthorizedAccessException)
-                {
-
-                }*/
+            {
+                
+                    actualDir = selectedItem.NameOfLocal;
+                    FilesAndDirectories = FullListing(ref actualDir, ref directories, ref files, ref prevDir, F);
+                
             }
             else
             {
@@ -165,7 +161,7 @@ namespace DLCloudManager.Models
                 }
                 catch (System.ComponentModel.Win32Exception)
                 {
-                    MessageBox.Show("There is no application for extension: " + file.ExtensionOfLocal);
+                    MessageBox.Show("There is no application for this extension: " + file.ExtensionOfLocal);
                 }
             }
         }
@@ -470,16 +466,20 @@ namespace DLCloudManager.Models
 
             }
         }
-
-
         static public void CreateNewTxtFile()
         {
-
-            Process.Star
-        }
-        static public string Search(string name)
-        {
-            return "";
+            using (Process CreateProcess = Process.Start("Notepad.exe"))
+            {   
+                while (!CreateProcess.HasExited)
+                {
+                    CreateProcess.Refresh();
+                    Thread.Sleep(5000);
+                    Console.WriteLine("wait");
+                }
+                CreateProcess.Close();
+                Console.WriteLine("end");
+            
+            }
         }
         static public List<Local> FindDrives()
         {
@@ -493,5 +493,14 @@ namespace DLCloudManager.Models
             return driveList;
         }
 
+
+
+
+
+        static public List<string> Search(string name)
+        {
+            List<string> a = new List<string>();
+            return a;
+        }
     }
 }

@@ -33,15 +33,16 @@ namespace DLCloudManager
         public MainWindow()
         {
             viewModel = new MainViewModel();
-            
 
+            
+            
 
 
 
 
             DataContext = viewModel;
             InitializeComponent();
-
+            
 
 
 
@@ -56,7 +57,7 @@ namespace DLCloudManager
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
+            
         }
 
 
@@ -96,16 +97,28 @@ namespace DLCloudManager
         {
             viewModel.SelectedItemList = ((ListView)sender).SelectedItems.Cast<Local>().ToList();
         }
+        private void Drive_Click(object sender, RoutedEventArgs e)
+        {
+            if (((Button)sender).Name.Equals("Drive"))
+            {
+                viewModel.OnListDrive(1);
+            }
+            else
+            {
+                viewModel.OnListDrive(2);
+            }
+
+        }
 
 
 
 
 
-       
-       
-        
-        
-                
+
+
+
+
+
         private void Tb1_KeyDown(object sender, KeyEventArgs e)
         {/*
             if(e.Key == Key.Enter)
@@ -124,31 +137,9 @@ namespace DLCloudManager
         }
         
                 
-        private void NewTxt_Click(object sender, RoutedEventArgs e)
-        {
-            
-            Process.Start("notepad.exe");
-        }
+                
+       
         
-        private void Drive2_Click(object sender, RoutedEventArgs e)
-        {
-            List<Local> drives = FileBasics.FindDrives();
-            Lw2.Items.Clear();
-            foreach (Local d in drives)
-            {
-                Lw2.Items.Add(d);
-            }
-        }
-        
-        private void Drive_Click(object sender, RoutedEventArgs e)
-        {
-            List<Local> drives = FileBasics.FindDrives();
-            Lw1.Items.Clear();
-            foreach (Local d in drives)
-            {
-                Lw1.Items.Add(d);
-            }
-        }
 
         private void GDrive1_Click(object sender, RoutedEventArgs e)
         {
