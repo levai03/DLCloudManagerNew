@@ -95,6 +95,7 @@
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Models\FileBasics.cs" />
+    <Compile Include="Models\FileGoogleD.cs" />
     <Compile Include="Models\Local.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="CreateDirWindow.xaml">
@@ -113,7 +114,6 @@
       <DependentUpon>CreateDirWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileDropB.cs" />
-    <Compile Include="FileGoogleD.cs" />
     <Compile Include="FileOneD.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

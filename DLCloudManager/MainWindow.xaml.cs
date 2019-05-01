@@ -57,7 +57,9 @@ namespace DLCloudManager
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            FileGoogleD FGD = new FileGoogleD();
+            FGD.Starter();
+            FGD.FileListing();
         }
 
 

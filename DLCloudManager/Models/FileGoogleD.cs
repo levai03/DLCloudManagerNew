@@ -1,29 +1,27 @@
-﻿using System;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v3;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Drive.v3;
-using Google.Apis.Drive.v3.Data;
-using Google.Apis.Services;
-using Google.Apis.Util.Store;
 
-
-namespace DLCloudManager
+namespace DLCloudManager.Models
 {
     class FileGoogleD
     {
-       /* static string[] Scopes = { DriveService.Scope.DriveReadonly };
+        static string[] Scopes = { DriveService.Scope.DriveReadonly };
         static string ApplicationName = "DLCloudManager";
 
         DriveService service;
-        
+
         public void Starter()
         {
-            
+
             UserCredential credential;
 
             using (var stream =
@@ -47,7 +45,7 @@ namespace DLCloudManager
                 ApplicationName = ApplicationName,
             });
 
-            
+
 
         }
         public List<Local> FileListing()
@@ -75,7 +73,6 @@ namespace DLCloudManager
                 Console.WriteLine("No files found.");
             }
             return filelist;
-        }*/
-
+        }
     }
 }
