@@ -57,9 +57,9 @@ namespace DLCloudManager
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            FileGoogleD FGD = new FileGoogleD();
-            FGD.Starter();
-            FGD.FileListing();
+            //FileGoogleD FGD = new FileGoogleD();
+           // FGD.Starter();
+           // FGD.FileListingFull();
         }
 
 
@@ -143,11 +143,7 @@ namespace DLCloudManager
        
         
 
-        private void GDrive1_Click(object sender, RoutedEventArgs e)
-        {
-            //fGD.Starter();
-            //List<Local> l = fGD.FileListing();
-        }
+        
 
         private void Cp_Button_MouseLeave(object sender, MouseEventArgs e)
         {

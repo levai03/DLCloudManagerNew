@@ -15,6 +15,7 @@ namespace DLCloudManager.Models
         private string sizeOfLocal;
         private string extensionOfLocal;
         private string dateOfCreation;
+        private string id;
 
         public Local(string i, string p, string n, string s, string e, string d)
         {
@@ -68,7 +69,7 @@ namespace DLCloudManager.Models
                 return dateOfCreation;
             }
         }
-
+        public string Id { get => id; set => id = value; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)

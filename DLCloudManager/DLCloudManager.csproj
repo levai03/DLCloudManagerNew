@@ -94,6 +94,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Models\CloudType.cs" />
     <Compile Include="Models\FileBasics.cs" />
     <Compile Include="Models\FileGoogleD.cs" />
     <Compile Include="Models\Local.cs" />

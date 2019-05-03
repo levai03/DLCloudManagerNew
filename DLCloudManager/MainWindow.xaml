@@ -72,7 +72,18 @@
         <Button Name="NewTxt" Command="{Binding Path=CreateTxtCommand}"  Content="T" HorizontalAlignment="Left" Margin="490,317,0,0" VerticalAlignment="Top" Width="21"/>
         <Button Name="Drive" Click="Drive_Click" Content="D" HorizontalAlignment="Left" Margin="104,23,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,0.5"/>
         <Button Name="Drive2" Click="Drive_Click"  Content="D" HorizontalAlignment="Left" Margin="516,25,0,0" VerticalAlignment="Top" Width="21"/>
-        <Button Name="GDrive1" Click="GDrive1_Click" Content="Button" HorizontalAlignment="Left" Margin="25,88,0,0" VerticalAlignment="Top" Width="42" Height="39"/>
+        <StackPanel Margin="10,63,914,265">
+            <RadioButton GroupName="1" IsChecked="{Binding Path=Normal}">Normal</RadioButton>
+            <RadioButton GroupName="1" IsChecked="{Binding Path=GoogleDrive}">GoogleDrive</RadioButton>
+            <RadioButton GroupName="1" IsChecked="{Binding Path=OneDrive}">OneDrive</RadioButton>
+            <RadioButton GroupName="1" IsChecked="{Binding Path=Dropbox}">Dropbox</RadioButton>
+        </StackPanel>
+        <StackPanel Margin="914,63,10,265">
+            <RadioButton GroupName="2" IsChecked="{Binding Path=Normal2}">Normal</RadioButton>
+            <RadioButton GroupName="2" IsChecked="{Binding Path=GoogleDrive2}">GoogleDrive</RadioButton>
+            <RadioButton GroupName="2" IsChecked="{Binding Path=OneDrive2}">OneDrive</RadioButton>
+            <RadioButton GroupName="2" IsChecked="{Binding Path=Dropbox2}">Dropbox</RadioButton>
+        </StackPanel>
 
     </Grid>
 
