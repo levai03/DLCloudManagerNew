@@ -19,7 +19,7 @@ namespace DLCloudManager.Models
 
         DriveService service;
         
-
+        
         public void Starter(string userName, string clientSecretJson)
         {
             try
@@ -51,7 +51,7 @@ namespace DLCloudManager.Models
             Local temp;
             if (file.MimeType.Equals("application/vnd.google-apps.folder"))
             {
-                temp = new Local("/img/52.png", "", file.Name, "", "dir", "");
+                temp = new Local("/img/Folder.png", "", file.Name, "", "dir", "");
                 temp.Id = file.Id;
             }
             else
@@ -106,20 +106,16 @@ namespace DLCloudManager.Models
                 return currentList;
             }
         }
-        
-
-
-
-        public void Upload(Local uploadFile, string parentID)
+        public string SelectContentType(string extension)
         {
             string uploadedType;
-            switch (uploadFile.ExtensionOfLocal)
+            switch (extension)
             {
                 case "xls": uploadedType = "application/vnd.ms-excel"; break;
                 case "xlsx": uploadedType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"; break;
                 case "xml": uploadedType = "text/xml"; break;
                 case "ods": uploadedType = "application/vnd.oasis.opendocument.spreadsheet"; break;
-                case "csv": 
+                case "csv":
                 case "tmpl":
                 case "txt": uploadedType = "text/plain"; break;
                 case "pdf": uploadedType = "application/pdf"; break;
@@ -143,43 +139,42 @@ namespace DLCloudManager.Models
                     uploadedType = "application / octet - stream";
                     break;
             }
+            return uploadedType;
+        }
+        public void Upload(Local uploadFile, string parentID)
+        {
+            string uploadedType = SelectContentType(uploadFile.ExtensionOfLocal);
 
             var fileMetadata = new Google.Apis.Drive.v3.Data.File()
             {
-                Name = uploadFile.NameOfLocal,
-                Size = long.Parse(uploadFile.SizeOfLocal)
-
+                Name = uploadFile.NameOfLocal + "." + uploadFile.ExtensionOfLocal,
             };
 
             FilesResource.CreateMediaUpload request;
             using (var stream = new System.IO.FileStream(uploadFile.PathOfLocal, System.IO.FileMode.Open))
             {
                 request = service.Files.Create(fileMetadata, stream, uploadedType);
-                request.Fields = "id";
+                request.Fields = "id, parents";
                 request.Upload();
             }
-
             var file = request.ResponseBody;
+            if (!parentID.Equals("root") && file != null)
+            {
+                Move(file.Id, parentID, file.Parents.First());
+            }
 
-            Console.WriteLine(file.Id);
         }
-        public void Download(string path, string name, string parentID)
+        public void Move(string fileId, string folderID, string prevFolderId)
         {
+            Google.Apis.Drive.v3.FilesResource.UpdateRequest updateRequest = service.Files.Update(new Google.Apis.Drive.v3.Data.File(), fileId);
+            updateRequest.Fields = "id, parents";
+            updateRequest.AddParents = folderID;
+            updateRequest.RemoveParents = prevFolderId;
+            updateRequest.Execute();
 
         }
         public void Copy(string fileId, string folderId, string sourceName)
-        {/*
-            // Retrieve the existing parents to remove
-            Google.Apis.Drive.v3.FilesResource.GetRequest getRequest = service.Files.Get(fileId);
-            getRequest.Fields = "parents";
-            Google.Apis.Drive.v3.Data.File file = getRequest.Execute();
-
-            // Copy the file to the new folder
-            Google.Apis.Drive.v3.FilesResource.UpdateRequest updateRequest = service.Files.Update(new Google.Apis.Drive.v3.Data.File(), fileId);
-            updateRequest.Fields = "id, parents";
-            updateRequest.AddParents = folderId;
-            //updateRequest.RemoveParents = previousParents;
-            file = updateRequest.Execute();*/
+        {
             Google.Apis.Drive.v3.Data.File copiedFile = new Google.Apis.Drive.v3.Data.File();
             copiedFile.Name = sourceName + " masolat";
             try
@@ -192,6 +187,118 @@ namespace DLCloudManager.Models
             }
 
         }
+        public void Download(string pathOfTargetDir, string name, string downloadedID)
+        {
+            var request = service.Files.Get(downloadedID);
+            var stream = new System.IO.MemoryStream();
+            string newName = pathOfTargetDir + "\\" + name;
+            request.MediaDownloader.ProgressChanged += (Google.Apis.Download.IDownloadProgress progress) =>
+            {
+                switch (progress.Status)
+                {
+                    case Google.Apis.Download.DownloadStatus.Completed:
+                        {
+                            SaveDownloadedFile(stream, newName);
+                            break;
+                        }
+                    case Google.Apis.Download.DownloadStatus.Failed:
+                        {
+                            MessageBox.Show("The download failed: " + name);
+                            break;
+                        }
+                }
+            };
+            request.Download(stream);
+
+        }
+        private void SaveDownloadedFile(System.IO.MemoryStream stream, string path)
+        {
+            using (System.IO.FileStream file = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            {
+                stream.WriteTo(file);
+            }
+        }
+        public void Update(string fileID, string fileName, string extensionOfLocal)
+        {
+            string uploadType = SelectContentType(extensionOfLocal);
+            try
+            {
+                Google.Apis.Drive.v3.Data.File SelectedFile = service.Files.Get(fileID).Execute();
+                byte[] byteArray = System.IO.File.ReadAllBytes(fileName);
+                System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
+                FilesResource.UpdateMediaUpload request = service.Files.Update(SelectedFile, fileID, stream, uploadType);
+                request.Upload();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Upload Failed: " + fileName);
+            }
+        }
+        public void Rename(string fileID, string fileName, string extensionOfLocal, string newName)
+        {
+            string uploadType = SelectContentType(extensionOfLocal);
+            try
+            {
+                Google.Apis.Drive.v3.Data.File SelectedFile = service.Files.Get(fileID).Execute();
+                SelectedFile.Name = newName + "." + extensionOfLocal;
+                FilesResource.UpdateRequest request = service.Files.Update(SelectedFile,fileID);
+                request.Execute();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Rename of the file is failed: " + fileName);
+            }
+        }
+        public void Delete(string fileID, string  fileName)
+        {
+            try
+            {
+                service.Files.Delete(fileID).Execute();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Delete of the file is failed: " + fileName);
+            }
+        }
+        public void CreateFolder(string newFolderName)
+        {
+            //nincs responsebody
+            var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+            {
+                Name = newFolderName,
+                MimeType = "application/vnd.google-apps.folder"
+            };
+            FilesResource.CreateRequest request;
+            request = service.Files.Create(fileMetadata);
+            request.Fields = "id, parents";
+            request.Execute();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void UploadLargeFile()
+        {
+            MessageBox.Show("Large file uploading (>5MB) currently not available! It will be unlocked with a later patch.");
+        }
+
+
+
+
+
+        
+
+        
         public void CopyMultipleElement(List<Local> selectedItems, string destinationID)
         {
             //Upload
@@ -204,23 +311,24 @@ namespace DLCloudManager.Models
         {
             //Copy
         }
-        public void Delete()
+        
+        public void DeleteMultipleElement()
         {
-
+            
         }
-        public void Rename()
+        public void MoveMultipleElement(List<Local> selectedItems, string destinationID)
         {
-
+            //csak Belül
         }
-        public void CreateFolder()
+
+        internal void Rename(string iD1, string nameOfLocal, string tempName)
         {
-
+            throw new NotImplementedException();
         }
-        public void Search()
+
+        internal void CreateNewDirectory(string iD1, string tempName)
         {
-
+            throw new NotImplementedException();
         }
-       
-
     }
 }

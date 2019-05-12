@@ -49,7 +49,7 @@ namespace DLCloudManager.Models
                 }
                 if (skipDir == false)
                 {
-                    dirlist.Add(new Local("/img/52.png", a.FullName, a.Name, "", "dir", ""));
+                    dirlist.Add(new Local("/img/Folder.png", a.FullName, a.Name, "", "dir", ""));
                 }
             }
             return dirlist;
@@ -473,11 +473,9 @@ namespace DLCloudManager.Models
                 while (!CreateProcess.HasExited)
                 {
                     CreateProcess.Refresh();
-                    Thread.Sleep(5000);
-                    Console.WriteLine("wait");
+                    Thread.Sleep(2000);
                 }
                 CreateProcess.Close();
-                Console.WriteLine("end");
             
             }
         }
@@ -497,10 +495,5 @@ namespace DLCloudManager.Models
 
 
 
-        static public List<string> Search(string name)
-        {
-            List<string> a = new List<string>();
-            return a;
-        }
     }
 }

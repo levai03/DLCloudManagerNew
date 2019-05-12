@@ -111,32 +111,46 @@ namespace DLCloudManager
             }
 
         }
+        private void HelpMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Shortcuts: "
+                + Environment.NewLine 
+                + Environment.NewLine + "Copy - F5"
+                + Environment.NewLine + "Move - F6"
+                + Environment.NewLine + "Delete - F8"
+                + Environment.NewLine + "Rename - F2"
+                + Environment.NewLine + "Create New Directory - F7"
+                + Environment.NewLine + "Create New TxtFile - Ctrl + N"
+                + Environment.NewLine + "List all Drives - Ctrl + D"
+                + Environment.NewLine + "Help - F3","Help");
 
-
-
-
-
-
-
-
-
-
+        }
         private void Tb1_KeyDown(object sender, KeyEventArgs e)
-        {/*
-            if(e.Key == Key.Enter)
+        {
+            if (e.Key == Key.Return)
             {
-                Listing1(sender, e);
+                if (e.Key == Key.Enter)
+                {
+                    ((TextBox)sender).MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                    if (((TextBox)sender).Name.Equals("Tb1")){
+                        if (Bt1.Command != null)
+                        {
+                            Bt1.Command.Execute(null);
+                        }
+                    }
+                    else
+                    {
+                        if (Bt2.Command != null)
+                        {
+                            Bt2.Command.Execute(null);
+                        }
+                    }
+                }
 
-            }*/
+            }
         }
         
-        private void Tb2_KeyDown(object sender, KeyEventArgs e)
-        {/*
-            if (e.Key == Key.Enter)
-            {
-                Listing2(sender, e);
-            }*/
-        }
+        
         
                 
                 
@@ -145,9 +159,12 @@ namespace DLCloudManager
 
         
 
-        private void Cp_Button_MouseLeave(object sender, MouseEventArgs e)
-        {
+        
 
+        private void Cp_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.WorkProgress = "Work in progress!";
+            
         }
     }
 }

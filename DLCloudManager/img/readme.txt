@@ -1,4 +1,4 @@
-16x16 Free Toolbar Icons
+24x24 Free Application Icons
 
 License Agreement
 
@@ -41,7 +41,7 @@ If you have any questions regarding copyright or licensing,
 including whether another license is required for icon use
 within products, please contact us here: www.aha-soft.com/support.htm 
 
-Product page: http://www.small-icons.com/stock-icons/16x16-free-toolbar-icons.htm
+Product page: http://www.small-icons.com/stock-icons/24x24-free-application-icons.htm
 
 Icon Design Service
 

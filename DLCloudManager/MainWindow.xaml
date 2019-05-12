@@ -5,20 +5,82 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DLCloudManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1045" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
-
+        Title="DLCloudManager" Height="585" Width="1216" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding Path=CopyCommand}" Key="F5"/>
+        <KeyBinding Command="{Binding Path=MoveCommand}" Key="F6"/>
+        <KeyBinding Command="{Binding Path=CreateDirectoryCommand}" Key="F7"/>
+        <KeyBinding Command="{Binding Path=RenameCommand}" Key="F2"/>
+        <KeyBinding Command="{Binding Path=DeleteCommand}" Key="F8"/>
+        <KeyBinding Command="{Binding Path=CreateTxtCommand}" Key="N" Modifiers="Ctrl"/>
+    </Window.InputBindings>
+    <Window.Resources>
+        <Style x:Key="NewButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="135*"/>
+            <ColumnDefinition Width="107*"/>
+        </Grid.ColumnDefinitions>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFD1CACA" Offset="0"/>
                 <GradientStop Color="#FFC73E3E" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <TextBox Name="Tb1" Text="{Binding Path=ActualDirectory1}" KeyDown="Tb1_KeyDown" KeyboardNavigation.IsTabStop="False" HorizontalAlignment="Left" Height="23" Margin="130,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"/>
-        <TextBox Name="Tb2" Text="{Binding Path=ActualDirectory2}" KeyDown="Tb2_KeyDown" KeyboardNavigation.IsTabStop="False" HorizontalAlignment="Left" Height="23" Margin="549,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="327"/>
-        <Button Name="Bt1" Command="{Binding Path=Listing1Command}" KeyboardNavigation.IsTabStop="False" Content="OK" HorizontalAlignment="Left" Height="23" Margin="465,24,0,0" VerticalAlignment="Top" Width="21"/>
-        <Button Name="Bt2" Command="{Binding Path=Listing2Command}" KeyboardNavigation.IsTabStop="False" Content="OK" HorizontalAlignment="Left" Height="23" Margin="892,23,0,0" VerticalAlignment="Top" Width="21"/>
-        <ListView ItemsSource="{Binding Path=FilesAndDirectories1}" SelectionChanged="OnSelectionChanged" Name="Lw1" MouseDoubleClick="OnMouseDoubleClick" HorizontalAlignment="Left" Height="276" Margin="130,63,0,0" VerticalAlignment="Top" Width="327" GotFocus="OnGotFocus">
+        <DockPanel Grid.ColumnSpan="2">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File" IsTabStop="False">
+                    <MenuItem Header="_TempPath" Command="{Binding Path=SelectTempPathCommand}"/>
+                    <MenuItem Header="_Close"/>
+                </MenuItem>
+                <MenuItem Header="_Edit" IsTabStop="False">
+                    <MenuItem Name="Sys" Header="_System" IsCheckable="True" IsChecked="{Binding Path=SystemAttribute}"/>
+                    <MenuItem Name="Hid" Header="_Hidden" IsCheckable="True" IsChecked="{Binding Path=HiddenAttribute}"/>
+                    <MenuItem Name="ROy" Header="_ReadOnly" IsCheckable="True" IsChecked="{Binding Path=ReadOnlyAttribute}"/>
+                </MenuItem>
+                <MenuItem Header="_Add-ins" IsTabStop="False">
+                </MenuItem>
+                <MenuItem Header="_Credits" IsTabStop="False">
+                </MenuItem>
+                <MenuItem Click="HelpMenuItem_Click" Header="_Help" IsTabStop="False">
+                </MenuItem>
+            </Menu>
+            <StackPanel></StackPanel>
+        </DockPanel>
+        <StackPanel>
+            <Label x:Name="ext" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Path=WorkProgress}"  Margin="548,492,1,39" FontSize="14" Width="126"/>
+        </StackPanel>
+        <TextBox Name="Tb1" Text="{Binding Path=ActualDirectory1}" IsEnabled="{Binding Path=Normal}" KeyDown="Tb1_KeyDown" KeyboardNavigation.IsTabStop="False" HorizontalAlignment="Left" Height="23" Margin="130,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="426"/>
+        <TextBox Name="Tb2" Text="{Binding Path=ActualDirectory2}" IsEnabled="{Binding Path=Normal2}" KeyDown="Tb1_KeyDown" KeyboardNavigation.IsTabStop="False" HorizontalAlignment="Left" Height="23" Margin="647,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="425" Grid.ColumnSpan="2"/>
+        <Button Name="Bt1" Style="{StaticResource NewButton}" IsEnabled="{Binding Path=Normal}" Command="{Binding Path=Listing1Command}" KeyboardNavigation.IsTabStop="False" HorizontalAlignment="Left" Height="23" Margin="561,35,0,0" VerticalAlignment="Top" Width="33">
+            <Button.Background>
+                <ImageBrush Stretch="None" ImageSource="img/OK.png"/>
+            </Button.Background>
+        </Button>
+        <Button Name="Bt2" Style="{StaticResource NewButton}" IsEnabled="{Binding Path=Normal2}" Command="{Binding Path=Listing2Command}" KeyboardNavigation.IsTabStop="False" HorizontalAlignment="Left" Height="23" Margin="409,34,0,0" VerticalAlignment="Top" Width="33" Grid.Column="1" IsTabStop="False">
+            <Button.Background>
+                <ImageBrush ImageSource="img/OK.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
+        <ListView ItemsSource="{Binding Path=FilesAndDirectories1}" SelectionChanged="OnSelectionChanged" Name="Lw1" MouseDoubleClick="OnMouseDoubleClick" HorizontalAlignment="Left" Height="398" Margin="130,63,0,0" VerticalAlignment="Top" Width="426" GotFocus="OnGotFocus">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="200">
@@ -26,20 +88,20 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="{Binding ImgSource}"/>
-                                    <TextBlock x:Name="Name" Text="{Binding NameOfLocal}"/>
+                                    <TextBlock x:Name="Name" Text="{Binding NameOfLocal}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn x:Name="Ext" Header="Ext" Width="30" DisplayMemberBinding="{Binding ExtensionOfLocal}"></GridViewColumn>
-                    <GridViewColumn x:Name="Size" Header="Size" Width="40" DisplayMemberBinding="{Binding SizeOfLocal}"></GridViewColumn>
-                    <GridViewColumn x:Name="Date" Header="Date" Width="40" DisplayMemberBinding="{Binding DateOfCreation}"></GridViewColumn>
+                    <GridViewColumn x:Name="Ext" Header="Ext" Width="40" DisplayMemberBinding="{Binding ExtensionOfLocal}"></GridViewColumn>
+                    <GridViewColumn x:Name="Size" Header="Size" Width="60" DisplayMemberBinding="{Binding SizeOfLocal}"></GridViewColumn>
+                    <GridViewColumn x:Name="Date" Header="Date" Width="105" DisplayMemberBinding="{Binding DateOfCreation}"></GridViewColumn>
 
                 </GridView>
             </ListView.View>
 
         </ListView>
-        <ListView Name="Lw2" ItemsSource="{Binding Path=FilesAndDirectories2}" SelectionChanged="OnSelectionChanged" MouseDoubleClick="OnMouseDoubleClick" HorizontalAlignment="Left" Height="276" Margin="549,63,0,0" VerticalAlignment="Top" Width="327" GotFocus="OnGotFocus">
+        <ListView Name="Lw2" ItemsSource="{Binding Path=FilesAndDirectories2}" SelectionChanged="OnSelectionChanged" MouseDoubleClick="OnMouseDoubleClick" HorizontalAlignment="Left" Height="398" Margin="647,63,0,0" VerticalAlignment="Top" Width="426" GotFocus="OnGotFocus" Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="200">
@@ -47,43 +109,73 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" >
                                     <Image Source="{Binding ImgSource}"/>
-                                    <TextBlock Width="100" x:Name="Name2" Text="{Binding NameOfLocal}"/>
+                                    <TextBlock Width="100" x:Name="Name2" Text="{Binding NameOfLocal}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn x:Name="Ext2" Header="Ext" Width="30" DisplayMemberBinding="{Binding ExtensionOfLocal}"></GridViewColumn>
-                    <GridViewColumn x:Name="Size2" Header="Size" Width="40" DisplayMemberBinding="{Binding SizeOfLocal}"></GridViewColumn>
-                    <GridViewColumn x:Name="Date2" Header="Date" Width="40" DisplayMemberBinding="{Binding DateOfCreation}"></GridViewColumn>
+                    <GridViewColumn x:Name="Ext2" Header="Ext" Width="40" DisplayMemberBinding="{Binding ExtensionOfLocal}"></GridViewColumn>
+                    <GridViewColumn x:Name="Size2" Header="Size" Width="60" DisplayMemberBinding="{Binding SizeOfLocal}"></GridViewColumn>
+                    <GridViewColumn x:Name="Date2" Header="Date" Width="105" DisplayMemberBinding="{Binding DateOfCreation}"></GridViewColumn>
 
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Name="Cp_Button" Command="{Binding Path=CopyCommand}" HorizontalAlignment="Left" Margin="490,63,0,0" VerticalAlignment="Top" Width="21" Content="" Height="23" MouseLeave="Cp_Button_MouseLeave" >
+        <Button Style="{StaticResource NewButton}" Name="Cp_Button" Command="{Binding Path=CopyCommand}" HorizontalAlignment="Left" Margin="588,63,0,0" VerticalAlignment="Top" Content="" Width="34"  Height="37" Focusable="False" IsTabStop="False" >
             <Button.Background>
-                <ImageBrush Stretch="None" ImageSource="img/42.png"/>
+                <ImageBrush Stretch="None" ImageSource="img/Copy.png"/>
             </Button.Background>
 
         </Button>
-        <Button Command="{Binding Path=MoveCommand}" Content="M" HorizontalAlignment="Left" Margin="490,105,0,0" VerticalAlignment="Top" Width="21"/>
-        <Button Name="DeleteBtn" Command="{Binding Path=DeleteCommand}" Content="Delete" HorizontalAlignment="Left" Margin="490,147,0,0" VerticalAlignment="Top" Width="21"/>
-        <Button Name="RenameBtn" Command="{Binding Path=RenameCommand}" Content="Rename" HorizontalAlignment="Left" Margin="490,185,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.524,0.545"/>
-        <Button Name="NewDirBtn" Command="{Binding Path=CreateDirectoryCommand}" Content="New" HorizontalAlignment="Left" Margin="490,225,0,0" VerticalAlignment="Top" Width="21"/>
-        <Button Name="NewTxt" Command="{Binding Path=CreateTxtCommand}"  Content="T" HorizontalAlignment="Left" Margin="490,317,0,0" VerticalAlignment="Top" Width="21"/>
-        <Button Name="Drive" Click="Drive_Click" Content="D" HorizontalAlignment="Left" Margin="104,23,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,0.5"/>
-        <Button Name="Drive2" Click="Drive_Click"  Content="D" HorizontalAlignment="Left" Margin="516,25,0,0" VerticalAlignment="Top" Width="21"/>
-        <StackPanel Margin="10,63,914,265">
-            <RadioButton GroupName="1" IsChecked="{Binding Path=Normal}">Normal</RadioButton>
-            <RadioButton GroupName="1" IsChecked="{Binding Path=GoogleDrive}">GoogleDrive</RadioButton>
-            <RadioButton GroupName="1" IsChecked="{Binding Path=OneDrive}">OneDrive</RadioButton>
-            <RadioButton GroupName="1" IsChecked="{Binding Path=Dropbox}">Dropbox</RadioButton>
+        <Button Style="{StaticResource NewButton}" Command="{Binding Path=MoveCommand}" HorizontalAlignment="Left" Margin="588,118,0,0" VerticalAlignment="Top" Width="34"  Height="36" Focusable="False" IsTabStop="False">
+            <Button.Background>
+                <ImageBrush Stretch="None" ImageSource="img/Left-right.png"/>
+            </Button.Background>
+        </Button>
+        <Button Style="{StaticResource NewButton}" Name="DeleteBtn" Command="{Binding Path=DeleteCommand}" HorizontalAlignment="Left" Margin="588,178,0,0" VerticalAlignment="Top" Width="34"  Height="37" Focusable="False" IsTabStop="False">
+            <Button.Background>
+                <ImageBrush ImageSource="img/Delete.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
+        <Button Style="{StaticResource NewButton}" Name="RenameBtn" Command="{Binding Path=RenameCommand}" HorizontalAlignment="Left" Margin="588,235,0,0" VerticalAlignment="Top" Width="34"  Height="37" RenderTransformOrigin="0.524,0.545" Focusable="False" IsTabStop="False">
+            <Button.Background>
+                <ImageBrush Stretch="None" ImageSource="img/How-to.png"/>
+            </Button.Background>
+
+        </Button>
+        <Button Style="{StaticResource NewButton}" Name="NewDirBtn" Command="{Binding Path=CreateDirectoryCommand}"  HorizontalAlignment="Left" Margin="588,297,0,0" VerticalAlignment="Top" Width="34"  Height="37" Focusable="False" IsTabStop="False">
+            <Button.Background>
+                <ImageBrush Stretch="None" ImageSource="img/Create.png"/>
+            </Button.Background>
+        </Button>
+        <Button Style="{StaticResource NewButton}" Name="NewTxt" Command="{Binding Path=CreateTxtCommand}" HorizontalAlignment="Left" Margin="588,424,0,0" VerticalAlignment="Top" Width="34"  Height="37" Focusable="False" IsTabStop="False">
+            <Button.Background>
+                <ImageBrush Stretch="None" ImageSource="img/New document.png"/>
+            </Button.Background>
+        </Button>
+        <Button Style="{StaticResource NewButton}" Name="Drive" Click="Drive_Click"  HorizontalAlignment="Left" Margin="104,35,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,0.5" Focusable="False" IsTabStop="False" Height="23">
+            <Button.Background>
+                <ImageBrush Stretch="None" ImageSource="img/Display.png"/>
+            </Button.Background>
+        </Button>
+        <Button Style="{StaticResource NewButton}" Name="Drive2" Click="Drive_Click" HorizontalAlignment="Left" Margin="619,35,0,0" VerticalAlignment="Top" Width="23" Focusable="False" IsTabStop="False" Height="23">
+            <Button.Background>
+                <ImageBrush Stretch="None" ImageSource="img/Display.png"/>
+            </Button.Background>
+        </Button>
+        <StackPanel Margin="30,87,550,393">
+            <RadioButton GroupName="1" IsChecked="{Binding Path=Normal}" IsTabStop="False">Normal</RadioButton>
+            <RadioButton GroupName="1" IsChecked="{Binding Path=GoogleDrive}" IsTabStop="False">GoogleDrive</RadioButton>
+            <RadioButton GroupName="1" IsChecked="{Binding Path=OneDrive}" IsTabStop="False">OneDrive</RadioButton>
+            <RadioButton GroupName="1" IsChecked="{Binding Path=Dropbox}" IsTabStop="False">Dropbox</RadioButton>
         </StackPanel>
-        <StackPanel Margin="914,63,10,265">
-            <RadioButton GroupName="2" IsChecked="{Binding Path=Normal2}">Normal</RadioButton>
-            <RadioButton GroupName="2" IsChecked="{Binding Path=GoogleDrive2}">GoogleDrive</RadioButton>
-            <RadioButton GroupName="2" IsChecked="{Binding Path=OneDrive2}">OneDrive</RadioButton>
-            <RadioButton GroupName="2" IsChecked="{Binding Path=Dropbox2}">Dropbox</RadioButton>
+        <StackPanel Margin="418,87,10,379" Grid.Column="1">
+            <RadioButton GroupName="2" IsChecked="{Binding Path=Normal2}" IsTabStop="False">Normal</RadioButton>
+            <RadioButton GroupName="2" IsChecked="{Binding Path=GoogleDrive2}" IsTabStop="False">GoogleDrive</RadioButton>
+            <RadioButton GroupName="2" IsChecked="{Binding Path=OneDrive2}" IsTabStop="False">OneDrive</RadioButton>
+            <RadioButton GroupName="2" IsChecked="{Binding Path=Dropbox2}" IsTabStop="False">Dropbox</RadioButton>
         </StackPanel>
+
 
     </Grid>
 

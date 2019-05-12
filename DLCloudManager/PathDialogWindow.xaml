@@ -1,0 +1,19 @@
+﻿<Window x:Class="DLCloudManager.PathDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DLCloudManager"
+        mc:Ignorable="d"
+        Title="Choose a new Path for the Temp directory!" Height="166.458" Width="405.016">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="205*"/>
+            <ColumnDefinition Width="587*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Path:" HorizontalAlignment="Left" Margin="53,39,0,0" VerticalAlignment="Top" Width="37"/>
+        <TextBox x:Name="Tx1" HorizontalAlignment="Left" Height="23" Margin="95,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="255" Grid.ColumnSpan="2"/>
+        <Button x:Name="CreateButton" Click="Button_Click" Content="Ok" Grid.Column="1" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Click="Button_Click_1" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="122,88,0,0" VerticalAlignment="Top" Width="75"/>
+    </Grid>
+</Window>

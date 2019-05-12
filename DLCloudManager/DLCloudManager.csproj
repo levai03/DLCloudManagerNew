@@ -35,34 +35,34 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dropbox.Api, Version=4.0.0.0, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dropbox.Api.4.9.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <HintPath>..\packages\Dropbox.Api.4.9.3\lib\net45\Dropbox.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.38.2\lib\net45\Google.Apis.dll</HintPath>
+    <Reference Include="Google.Apis, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.40.0\lib\net45\Google.Apis.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Auth, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Auth.1.38.2\lib\net45\Google.Apis.Auth.dll</HintPath>
+    <Reference Include="Google.Apis.Auth, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.40.0\lib\net45\Google.Apis.Auth.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Auth.1.38.2\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.40.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Core, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Core.1.38.2\lib\net45\Google.Apis.Core.dll</HintPath>
+    <Reference Include="Google.Apis.Core, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.40.0\lib\net45\Google.Apis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Drive.v3, Version=1.38.2.1566, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Drive.v3.1.38.2.1566\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
+    <Reference Include="Google.Apis.Drive.v3, Version=1.39.0.1587, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Drive.v3.1.39.0.1587\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.PlatformServices, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.38.2\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.40.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Graph.Core, Version=1.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Graph.Core.1.4.0\lib\net45\Microsoft.Graph.Core.dll</HintPath>
+    <Reference Include="Microsoft.Graph.Core, Version=1.15.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Graph.Core.1.15.0\lib\net45\Microsoft.Graph.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.22.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.22.302111727\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.29.0.1078, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.29.0\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms, Version=2.22.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.22.302111727\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms, Version=2.29.0.1078, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.29.0\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.OneDrive.Sdk, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.OneDriveSDK.2.0.7\lib\portable-net45+netcore45+wpa81+win8\Microsoft.OneDrive.Sdk.dll</HintPath>
@@ -73,8 +73,15 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -94,10 +101,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Models\CloudType.cs" />
     <Compile Include="Models\FileBasics.cs" />
+    <Compile Include="Models\FileDropB.cs" />
     <Compile Include="Models\FileGoogleD.cs" />
+    <Compile Include="Models\FileOneD.cs" />
     <Compile Include="Models\Local.cs" />
+    <Compile Include="PathDialogWindow.xaml.cs">
+      <DependentUpon>PathDialogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="CreateDirWindow.xaml">
       <SubType>Designer</SubType>
@@ -114,12 +127,14 @@
     <Compile Include="CreateDirWindow.xaml.cs">
       <DependentUpon>CreateDirWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FileDropB.cs" />
-    <Compile Include="FileOneD.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PathDialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -142,6 +157,7 @@
     <None Include="credentials.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="img\index.url" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -230,6 +246,231 @@
     <Resource Include="img\8.png" />
     <Resource Include="img\9.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="img\Abort.png" />
+    <Resource Include="img\About.png" />
+    <Resource Include="img\Accounting.png" />
+    <Resource Include="img\Add.png" />
+    <Resource Include="img\Address book.png" />
+    <Resource Include="img\Alarm clock.png" />
+    <Resource Include="img\Alarm.png" />
+    <Resource Include="img\Alert.png" />
+    <Resource Include="img\Alien.png" />
+    <Resource Include="img\Anchor.png" />
+    <Resource Include="img\Application.png" />
+    <Resource Include="img\Apply.png" />
+    <Resource Include="img\Back.png" />
+    <Resource Include="img\Bad mark.png" />
+    <Resource Include="img\Bee.png" />
+    <Resource Include="img\Black bookmark.png" />
+    <Resource Include="img\Black pin.png" />
+    <Resource Include="img\Black tag.png" />
+    <Resource Include="img\Blog.png" />
+    <Resource Include="img\Blue bookmark.png" />
+    <Resource Include="img\Blue key.png" />
+    <Resource Include="img\Blue pin.png" />
+    <Resource Include="img\Blue tag.png" />
+    <Resource Include="img\Bomb.png" />
+    <Resource Include="img\Bookmark.png" />
+    <Resource Include="img\Boss.png" />
+    <Resource Include="img\Bottom.png" />
+    <Resource Include="img\Briefcase.png" />
+    <Resource Include="img\Brush.png" />
+    <Resource Include="img\Bubble.png" />
+    <Resource Include="img\Buy.png" />
+    <Resource Include="img\Calculator.png" />
+    <Resource Include="img\Calendar.png" />
+    <Resource Include="img\Car key.png" />
+    <Resource Include="img\CD.png" />
+    <Resource Include="img\Clipboard.png" />
+    <Resource Include="img\Clock.png" />
+    <Resource Include="img\Close.png" />
+    <Resource Include="img\Coin.png" />
+    <Resource Include="img\Comment.png" />
+    <Resource Include="img\Company.png" />
+    <Resource Include="img\Compass.png" />
+    <Resource Include="img\Component.png" />
+    <Resource Include="img\Computer.png" />
+    <Resource Include="img\Copy.png" />
+    <Resource Include="img\Create.png" />
+    <Resource Include="img\Cut.png" />
+    <Resource Include="img\Danger.png" />
+    <Resource Include="img\Database.png" />
+    <Resource Include="img\Delete.png" />
+    <Resource Include="img\Delivery.png" />
+    <Resource Include="img\Diagram.png" />
+    <Resource Include="img\Dial.png" />
+    <Resource Include="img\Disaster.png" />
+    <Resource Include="img\Display.png" />
+    <Resource Include="img\Dollar.png" />
+    <Resource Include="img\Door.png" />
+    <Resource Include="img\Down.png" />
+    <Resource Include="img\Download.png" />
+    <Resource Include="img\Downloads folder.png" />
+    <Resource Include="img\E-mail.png" />
+    <Resource Include="img\Earth.png" />
+    <Resource Include="img\Eject.png" />
+    <Resource Include="img\Equipment.png" />
+    <Resource Include="img\Erase.png" />
+    <Resource Include="img\Error.png" />
+    <Resource Include="img\Euro.png" />
+    <Resource Include="img\Exit.png" />
+    <Resource Include="img\Expand.png" />
+    <Resource Include="img\Eye.png" />
+    <Resource Include="img\Fall.png" />
+    <Resource Include="img\Fast-forward.png" />
+    <Resource Include="img\Favourites.png" />
+    <Resource Include="img\Female symbol.png" />
+    <Resource Include="img\Female.png" />
+    <Resource Include="img\Film.png" />
+    <Resource Include="img\Filter.png" />
+    <Resource Include="img\Find.png" />
+    <Resource Include="img\First record.png" />
+    <Resource Include="img\First.png" />
+    <Resource Include="img\Flag.png" />
+    <Resource Include="img\Flash drive.png" />
+    <Resource Include="img\Folder.png" />
+    <Resource Include="img\Forbidden.png" />
+    <Resource Include="img\Forward.png" />
+    <Resource Include="img\Free bsd.png" />
+    <Resource Include="img\Gift.png" />
+    <Resource Include="img\Globe.png" />
+    <Resource Include="img\Go back.png" />
+    <Resource Include="img\Go forward.png" />
+    <Resource Include="img\Go.png" />
+    <Resource Include="img\Good mark.png" />
+    <Resource Include="img\Green bookmark.png" />
+    <Resource Include="img\Green pin.png" />
+    <Resource Include="img\Green tag.png" />
+    <Resource Include="img\Hard disk.png" />
+    <Resource Include="img\Heart.png" />
+    <Resource Include="img\Help book 3d.png" />
+    <Resource Include="img\Help book.png" />
+    <Resource Include="img\Help.png" />
+    <Resource Include="img\Hint.png" />
+    <Resource Include="img\History.png" />
+    <Resource Include="img\Home.png" />
+    <Resource Include="img\Hourglass.png" />
+    <Resource Include="img\How-to.png" />
+    <Resource Include="img\Hungup.png" />
+    <Resource Include="img\In-yang.png" />
+    <Resource Include="img\Info.png" />
+    <Resource Include="img\Iphone.png" />
+    <Resource Include="img\Key.png" />
+    <Resource Include="img\Last recor.png" />
+    <Resource Include="img\Last.png" />
+    <Resource Include="img\Left-right.png" />
+    <Resource Include="img\Letter.png" />
+    <Resource Include="img\Lightning.png" />
+    <Resource Include="img\Liner.png" />
+    <Resource Include="img\Linux.png" />
+    <Resource Include="img\List.png" />
+    <Resource Include="img\Load.png" />
+    <Resource Include="img\Lock.png" />
+    <Resource Include="img\Low rating.png" />
+    <Resource Include="img\Magic wand.png" />
+    <Resource Include="img\Mail.png" />
+    <Resource Include="img\Male symbol.png" />
+    <Resource Include="img\Male.png" />
+    <Resource Include="img\Medium rating.png" />
+    <Resource Include="img\Message.png" />
+    <Resource Include="img\Mobile-phone.png" />
+    <Resource Include="img\Modify.png" />
+    <Resource Include="img\Move.png" />
+    <Resource Include="img\Movie.png" />
+    <Resource Include="img\Music.png" />
+    <Resource Include="img\Mute.png" />
+    <Resource Include="img\Network connection.png" />
+    <Resource Include="img\New document.png" />
+    <Resource Include="img\New.png" />
+    <Resource Include="img\Next track.png" />
+    <Resource Include="img\Next.png" />
+    <Resource Include="img\No-entry.png" />
+    <Resource Include="img\No.png" />
+    <Resource Include="img\Notes.png" />
+    <Resource Include="img\OK.png" />
+    <Resource Include="img\Paste.png" />
+    <Resource Include="img\Pause.png" />
+    <Resource Include="img\People.png" />
+    <Resource Include="img\Percent.png" />
+    <Resource Include="img\Person.png" />
+    <Resource Include="img\Phone number.png" />
+    <Resource Include="img\Phone.png" />
+    <Resource Include="img\Picture.png" />
+    <Resource Include="img\Pie chart.png" />
+    <Resource Include="img\Pinion.png" />
+    <Resource Include="img\Play-music.png" />
+    <Resource Include="img\Play.png" />
+    <Resource Include="img\Playback.png" />
+    <Resource Include="img\Previous record.png" />
+    <Resource Include="img\Previous.png" />
+    <Resource Include="img\Print.png" />
+    <Resource Include="img\Problem.png" />
+    <Resource Include="img\Question.png" />
+    <Resource Include="img\Radiation.png" />
+    <Resource Include="img\Raise.png" />
+    <Resource Include="img\readme.txt" />
+    <Resource Include="img\Record.png" />
+    <Resource Include="img\Red bookmark.png" />
+    <Resource Include="img\Red mark.png" />
+    <Resource Include="img\Red pin.png" />
+    <Resource Include="img\Red star.png" />
+    <Resource Include="img\Red tag.png" />
+    <Resource Include="img\Redo.png" />
+    <Resource Include="img\Refresh.png" />
+    <Resource Include="img\Remove.png" />
+    <Resource Include="img\Repair.png" />
+    <Resource Include="img\Report.png" />
+    <Resource Include="img\Retort.png" />
+    <Resource Include="img\Rewind.png" />
+    <Resource Include="img\Sad.png" />
+    <Resource Include="img\Save.png" />
+    <Resource Include="img\Schedule.png" />
+    <Resource Include="img\Script.png" />
+    <Resource Include="img\Search.png" />
+    <Resource Include="img\Shield.png" />
+    <Resource Include="img\Shopping cart.png" />
+    <Resource Include="img\Silence.png" />
+    <Resource Include="img\Smile.png" />
+    <Resource Include="img\Sound.png" />
+    <Resource Include="img\Stock graph.png" />
+    <Resource Include="img\Stop sign.png" />
+    <Resource Include="img\Stop.png" />
+    <Resource Include="img\Stopwatch.png" />
+    <Resource Include="img\Sum.png" />
+    <Resource Include="img\Sync.png" />
+    <Resource Include="img\Table.png" />
+    <Resource Include="img\Target.png" />
+    <Resource Include="img\Taxi.png" />
+    <Resource Include="img\Terminate.png" />
+    <Resource Include="img\Text preview.png" />
+    <Resource Include="img\Text.png" />
+    <Resource Include="img\Thumbs down.png" />
+    <Resource Include="img\Thumbs up.png" />
+    <Resource Include="img\Toolbox.png" />
+    <Resource Include="img\Top.png" />
+    <Resource Include="img\Trackback.png" />
+    <Resource Include="img\Trash.png" />
+    <Resource Include="img\Tune.png" />
+    <Resource Include="img\Turn off.png" />
+    <Resource Include="img\Twitter.png" />
+    <Resource Include="img\Undo.png" />
+    <Resource Include="img\Unlock.png" />
+    <Resource Include="img\Up-down.png" />
+    <Resource Include="img\Up.png" />
+    <Resource Include="img\Update.png" />
+    <Resource Include="img\Upload.png" />
+    <Resource Include="img\User group.png" />
+    <Resource Include="img\View.png" />
+    <Resource Include="img\Volume.png" />
+    <Resource Include="img\Wallet.png" />
+    <Resource Include="img\Warning.png" />
+    <Resource Include="img\Wrench.png" />
+    <Resource Include="img\Yellow bookmark.png" />
+    <Resource Include="img\Yellow pin.png" />
+    <Resource Include="img\Yellow tag.png" />
+    <Resource Include="img\Yes.png" />
+    <Resource Include="img\Zoom.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
