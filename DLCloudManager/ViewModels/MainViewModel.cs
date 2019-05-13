@@ -37,7 +37,7 @@ namespace DLCloudManager.ViewModels
         public MainViewModel()
         {
             dropBoxToken = "Vp27yfQf79AAAAAAAAAACkn4rz-SxmpM1gVZPUff1tb952xqQ3JVViDNxAlfUhxl";
-            tempPath = "C:\\temp";
+            tempPath = "C:\\";
             PrevDirectory1 = "C:\\";
             ActualDirectory1 = "C:\\";
             PrevDirectory2 = "C:\\";
@@ -192,6 +192,13 @@ namespace DLCloudManager.ViewModels
             {
                 normal = value;
                 OnPropertyChanged("Normal");
+                if (normal)
+                {
+                    ActualDirectory1 = "C:\\";
+                    PrevDirectory1 = "C:\\";
+                    FilesAndDirectories1 = FileBasics.FullListing(ref actualDirectory1, ref directories1, ref files1, ref prevDirectory1, F);
+                    OnPropertyChanged("ActualDirectory1");
+                }
             }
         }
         public bool GoogleDrive
@@ -254,6 +261,13 @@ namespace DLCloudManager.ViewModels
             {
                 normal2 = value;
                 OnPropertyChanged("Normal2");
+                if (normal2)
+                {
+                     ActualDirectory2 = "C:\\";
+                     PrevDirectory2 = "C:\\";
+                     FilesAndDirectories2 = FileBasics.FullListing(ref actualDirectory2, ref directories2, ref files2, ref prevDirectory2, F);
+                     OnPropertyChanged("ActualDirectory2");
+                }
             }
         }
         public bool GoogleDrive2
@@ -268,9 +282,13 @@ namespace DLCloudManager.ViewModels
                 OnPropertyChanged("GoogleDrive2");
                 if (googleDrive2 == true)
                 {
-                    FGD.Starter("David","credentials.json");
+                    FGD.Starter("David", "credentials.json");
+                    cloudPaths2.Clear();
+                    cloudPaths2.Add(new CloudType("root", "root"));
+                    ActualDirectory2 = "root";
+                    FilesAndDirectories2 = FGD.FileListingFull(cloudPaths2.Last().ID1);
                 }
-                
+
             }
         }
         public bool OneDrive2
@@ -405,11 +423,11 @@ namespace DLCloudManager.ViewModels
                 FilesAndDirectories2 = FileBasics.FullListing(ref actualDirectory2, ref directories2, ref files2, ref prevDirectory2, F);
                 OnPropertyChanged("ActualDirectory2");
             }
-            else if (googleDrive)
+            else if (googleDrive2)
             {
                 FilesAndDirectories2 = FGD.FileListingFull(cloudPaths2.Last().ID1);
             }
-            else if (oneDrive)
+            else if (oneDrive2)
             {
 
             }
@@ -476,7 +494,7 @@ namespace DLCloudManager.ViewModels
                 }
                 else if (GoogleDrive2) //feltöltés
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1,true,ref workError);
                 }
                 else if (OneDrive2) //feltöltés
                 {
@@ -491,24 +509,24 @@ namespace DLCloudManager.ViewModels
             {
                 if (normal2) //letöltés
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, actualDirectory2);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, actualDirectory2, ref workError);
                 }
                 else if (GoogleDrive2) //másolás Google
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, cloudPaths2.Last().ID1, true);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, true,ref workError);
                 }
                 else if (OneDrive2) //áttöltés Google - One
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
                     FOD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1);
                     FileBasics.Delete(tempPath);
                 }
                 else //Áttöltés Google - Drop
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
-                    FDB.CopyMultipleElementUpload(selectedItemList, actualDirectory1, actualDirectory2, dropBoxToken, ref workError);
+                    FDB.CopyMultipleElementUpload(uploadItems, actualDirectory1, actualDirectory2, dropBoxToken, ref workError);
                     FileBasics.Delete(tempPath);
                 }
 
@@ -523,7 +541,7 @@ namespace DLCloudManager.ViewModels
                 {
                     FOD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
-                    FGD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1);
+                    FGD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1, true, ref workError);
                     FileBasics.Delete(tempPath);
                     
                 }
@@ -535,7 +553,7 @@ namespace DLCloudManager.ViewModels
                 {
                     FOD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
-                    FDB.CopyMultipleElementUpload(selectedItemList, actualDirectory1, actualDirectory2, dropBoxToken, ref workError);
+                    FDB.CopyMultipleElementUpload(uploadItems, tempPath, actualDirectory2, dropBoxToken, ref workError);
                     FileBasics.Delete(tempPath);
                 }
             }
@@ -547,9 +565,9 @@ namespace DLCloudManager.ViewModels
                 }
                 else if (GoogleDrive2) //áttöltés Drop - Google
                 {
-                    FDB.CopyMultipleElement(selectedItemList, actualDirectory1, actualDirectory2, dropBoxToken, ref workError);
+                    FDB.CopyMultipleElement(selectedItemList, actualDirectory1, tempPath, dropBoxToken, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
-                    FGD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1);
+                    FGD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1, true, ref workError);
                     FileBasics.Delete(tempPath);
 
                 }
@@ -576,7 +594,7 @@ namespace DLCloudManager.ViewModels
                 }
                 else if (GoogleDrive) //feltöltés
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, true, ref workError);
                 }
                 else if (OneDrive) //feltöltés
                 {
@@ -591,22 +609,22 @@ namespace DLCloudManager.ViewModels
             {
                 if (normal) //letöltés
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, actualDirectory1);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, actualDirectory1, ref workError);
                 }
                 else if (GoogleDrive) //másolás Google
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, cloudPaths1.Last().ID1, true);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, true, ref workError);
                 }
                 else if (OneDrive) //áttöltés Google - One
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
                     FOD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1);
                     FileBasics.Delete(tempPath);
                 }
                 else //Áttöltés Google - Drop
                 {
-                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath);
+                    FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
                     FDB.CopyMultipleElementUpload(selectedItemList,actualDirectory2,actualDirectory1,dropBoxToken,ref workError);
                     FileBasics.Delete(tempPath);
@@ -623,7 +641,7 @@ namespace DLCloudManager.ViewModels
                 {
                     FOD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
-                    FGD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1);
+                    FGD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1, true, ref workError);
                     FileBasics.Delete(tempPath);
 
                 }
@@ -647,9 +665,10 @@ namespace DLCloudManager.ViewModels
                 }
                 else if (GoogleDrive) //áttöltés Drop - Google
                 {
-                    FDB.CopyMultipleElement(selectedItemList, actualDirectory2, actualDirectory1, dropBoxToken, ref workError);
+                    FDB.CopyMultipleElement(selectedItemList, actualDirectory2, tempPath, dropBoxToken, ref workError);
+                    FileBasics.CreateNewDirectory(tempPath, "temp");
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
-                    FGD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1);
+                    FGD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1, true, ref workError);
                     FileBasics.Delete(tempPath);
 
                 }
@@ -707,7 +726,7 @@ namespace DLCloudManager.ViewModels
                     }
                     else if (googleDrive && googleDrive2 && !cloudPaths1.Last().ID1.Equals(cloudPaths2.Last().ID1))
                     {
-                        FGD.MoveMultipleElement(selectedItemList, cloudPaths2.Last().ID1);
+                        FGD.MoveMultipleElement(selectedItemList, cloudPaths1.Last().ID1, cloudPaths2.Last().ID1, ref workError);
                     }
                     else if (oneDrive && oneDrive2 && !cloudPaths1.Last().ID1.Equals(cloudPaths2.Last().ID1))
                     {
@@ -731,7 +750,7 @@ namespace DLCloudManager.ViewModels
                     }
                     else if (googleDrive && googleDrive2 && !cloudPaths1.Last().ID1.Equals(cloudPaths2.Last().ID1))
                     {
-                        FGD.MoveMultipleElement(selectedItemList, cloudPaths1.Last().ID1);
+                        FGD.MoveMultipleElement(selectedItemList, cloudPaths2.Last().ID1, cloudPaths1.Last().ID1, ref workError);
                     }
                     else if (oneDrive && oneDrive2 && !cloudPaths1.Last().ID1.Equals(cloudPaths2.Last().ID1))
                     {
@@ -773,7 +792,7 @@ namespace DLCloudManager.ViewModels
                     }
                     else if (googleDrive)
                     {
-                        FGD.DeleteMultipleElement();
+                        FGD.DeleteMultipleElement(selectedItemList,ref workError);
                     }
                     else if (oneDrive)
                     {
@@ -783,7 +802,7 @@ namespace DLCloudManager.ViewModels
                     {
                         FDB.DeleteMultipleElement(selectedItemList,actualDirectory1,dropBoxToken,ref workError);
                     }
-                    
+                    OnListing1(commandParameter);
                 }
                 else if (activeListview == 2)
                 {
@@ -793,7 +812,7 @@ namespace DLCloudManager.ViewModels
                     }
                     else if (googleDrive2)
                     {
-                        FGD.DeleteMultipleElement();
+                        FGD.DeleteMultipleElement(selectedItemList,ref workError);
                     }
                     else if (oneDrive2)
                     {
@@ -803,7 +822,7 @@ namespace DLCloudManager.ViewModels
                     {
                         FDB.DeleteMultipleElement(selectedItemList, actualDirectory2, dropBoxToken, ref workError);
                     }
-                    
+                    OnListing2(commandParameter);
                 }
             }
             else
@@ -811,8 +830,8 @@ namespace DLCloudManager.ViewModels
                 workError = true;
                 MessageBox.Show("There is no selected item!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            OnListing1(commandParameter);
-            OnListing2(commandParameter);
+            
+            
             ProgressStatus(workError);
         }
         private void OnRename(object commandParameter)
@@ -838,7 +857,7 @@ namespace DLCloudManager.ViewModels
                     }
                     else if (googleDrive)
                     {
-                        FGD.Rename(cloudPaths1.Last().ID1, tempItem.NameOfLocal, tempName);
+                        FGD.Rename(tempItem.Id, tempItem.NameOfLocal, tempItem.ExtensionOfLocal, tempName);
                     }
                     else if (oneDrive)
                     {
@@ -858,7 +877,7 @@ namespace DLCloudManager.ViewModels
                     }
                     else if (googleDrive2)
                     {
-                        FGD.Rename(cloudPaths2.Last().ID1, tempItem.NameOfLocal, tempName);
+                        FGD.Rename(tempItem.Id, tempItem.NameOfLocal, tempItem.ExtensionOfLocal, tempName);
                     }
                     else if (oneDrive2)
                     {
@@ -901,7 +920,7 @@ namespace DLCloudManager.ViewModels
                     }
                     else if (googleDrive)
                     {
-                        FGD.CreateNewDirectory(cloudPaths1.Last().ID1, tempName);
+                        FGD.CreateFolder(tempName, cloudPaths1.Last().ID1);
                     }
                     else if (oneDrive)
                     {
@@ -922,7 +941,7 @@ namespace DLCloudManager.ViewModels
                     }
                     else if (googleDrive2)
                     {
-                        FGD.CreateNewDirectory(cloudPaths2.Last().ID1, tempName);
+                        FGD.CreateFolder(tempName, cloudPaths2.Last().ID1);
                     }
                     else if (oneDrive2)
                     {
@@ -961,10 +980,10 @@ namespace DLCloudManager.ViewModels
                 ActualDirectory2 = "Drives";
             }
         }
-        private void OnProgressStart(object commandParametere)
+        /*private void OnProgressStart(object commandParametere)
         {
             WorkProgress = "Work in progress!";
-        }
+        }*/
 
         //Segéd metódusok
         private void NameAdded(object sender, EventArgs e)

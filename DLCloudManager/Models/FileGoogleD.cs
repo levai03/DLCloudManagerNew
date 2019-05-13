@@ -218,20 +218,21 @@ namespace DLCloudManager.Models
                 stream.WriteTo(file);
             }
         }
-        public void Update(string fileID, string fileName, string extensionOfLocal)
+        public void Update(string fileID, string filePath, string extensionOfLocal, ref bool workError)
         {
             string uploadType = SelectContentType(extensionOfLocal);
             try
             {
                 Google.Apis.Drive.v3.Data.File SelectedFile = service.Files.Get(fileID).Execute();
-                byte[] byteArray = System.IO.File.ReadAllBytes(fileName);
+                byte[] byteArray = System.IO.File.ReadAllBytes(filePath);
                 System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
                 FilesResource.UpdateMediaUpload request = service.Files.Update(SelectedFile, fileID, stream, uploadType);
                 request.Upload();
             }
             catch (Exception e)
             {
-                MessageBox.Show("Upload Failed: " + fileName);
+                workError = true;
+                MessageBox.Show("Upload Failed: " + e.Message);
             }
         }
         public void Rename(string fileID, string fileName, string extensionOfLocal, string newName)
@@ -249,7 +250,7 @@ namespace DLCloudManager.Models
                 MessageBox.Show("Rename of the file is failed: " + fileName);
             }
         }
-        public void Delete(string fileID, string  fileName)
+        public void Delete(string fileID, string  fileName, ref bool workError)
         {
             try
             {
@@ -257,11 +258,13 @@ namespace DLCloudManager.Models
             }
             catch (Exception e)
             {
+                workError = true;
                 MessageBox.Show("Delete of the file is failed: " + fileName);
             }
         }
-        public void CreateFolder(string newFolderName)
+        public string CreateFolder(string newFolderName, string actualDirID)
         {
+            List<Local> preTemp = FileListingFull("root");
             //nincs responsebody
             var fileMetadata = new Google.Apis.Drive.v3.Data.File()
             {
@@ -272,6 +275,26 @@ namespace DLCloudManager.Models
             request = service.Files.Create(fileMetadata);
             request.Fields = "id, parents";
             request.Execute();
+            List<Local> postTemp = FileListingFull("root");
+            string newItemID = "";
+            bool newItemFound;
+            foreach (var postItem in postTemp)
+            {
+                newItemFound = false;
+                foreach (var preItem in preTemp)
+                {
+                    if (preItem.Id.Equals(postItem.Id)) newItemFound = true;
+                }
+                if (newItemFound == false)
+                {
+                    newItemID = postItem.Id;
+                    break;
+                }
+            }
+            if (!newItemID.Equals("")) Move(newItemID, actualDirID, "root");
+
+            return newItemID;
+
         }
 
 
@@ -298,37 +321,159 @@ namespace DLCloudManager.Models
 
         
 
-        
-        public void CopyMultipleElement(List<Local> selectedItems, string destinationID)
+        /// <summary>
+        /// Uploader
+        /// </summary>
+        /// <param name="selectedItems"></param>
+        /// <param name="destinationID"></param>
+        public void CopyMultipleElement(List<Local> selectedItems, string destinationID, List<FileAttributes> F, ref bool workError)
         {
             //Upload
+            foreach (var item in selectedItems)
+            {
+                if (!item.NameOfLocal.Equals(".."))
+                {
+                    if (item.ExtensionOfLocal.Equals("dir"))
+                    {
+                        string newFolder = CreateFolder(item.NameOfLocal, destinationID);
+
+                        string selectedItem =item.PathOfLocal + "\\" + item.NameOfLocal;
+                        List<Local> dirs = new List<Local>();
+                        List<Local> files = new List<Local>();
+                        List<Local> recFiles = FileBasics.FullListing(ref newFolder, ref dirs, ref files, ref newFolder, F);
+                        CopyMultipleElement(recFiles, newFolder, F, ref workError);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Upload(item, destinationID);
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show("Dropbox Access Error: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            workError = true;
+                        }
+                    }
+
+                }
+            }
         }
-        public void CopyMultipleElement(List<Local> selectedItems, string sourceID, string localPath)
+        /// <summary>
+        /// Downloader
+        /// </summary>
+        /// <param name="selectedItems"></param>
+        /// <param name="sourceID"></param>
+        /// <param name="localPath"></param>
+        public void CopyMultipleElement(List<Local> selectedItems, string sourceID, string localPath, ref bool workError)
         {
             //Download
+            foreach (var item in selectedItems)
+            {
+                if (!item.NameOfLocal.Equals(".."))
+                {
+                    if (item.ExtensionOfLocal.Equals("dir"))
+                    {
+                        FileBasics.CreateNewDirectory(localPath, item.NameOfLocal);
+
+                        List<Local> recFiles = FileListingFull(item.Id);
+                        string newPath = localPath + "\\" + item.NameOfLocal;
+                        CopyMultipleElement(recFiles,item.Id, newPath, ref workError);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Download(localPath,item.NameOfLocal, item.Id);
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show("Dropbox Access Error: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            workError = true;
+                        }
+                    }
+
+                }
+            }
         }
-        public void CopyMultipleElement(List<Local> selectedItems, string sourceID, string destinationID, bool noLocal)
+        /// <summary>
+        /// Copy
+        /// </summary>
+        /// <param name="selectedItems"></param>
+        /// <param name="sourceID"></param>
+        /// <param name="destinationID"></param>
+        /// <param name="noLocal"></param>
+        public void CopyMultipleElement(List<Local> selectedItems, string destinationID, bool noLocal, ref bool workError)
         {
             //Copy
+            foreach (var item in selectedItems)
+            {
+                if (!item.NameOfLocal.Equals(".."))
+                {
+                    if (item.ExtensionOfLocal.Equals("dir"))
+                    {
+                        string newFolder = CreateFolder(item.NameOfLocal, destinationID);
+
+                        List<Local> recFiles = FileListingFull(item.Id);
+                        CopyMultipleElement(recFiles, item.Id,noLocal,ref workError);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Copy(item.Id, destinationID,item.NameOfLocal);
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show("Dropbox Access Error: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            workError = true;
+                        }
+                    }
+
+                }
+            }
         }
         
-        public void DeleteMultipleElement()
+        public void DeleteMultipleElement(List<Local> selectedItems, ref bool workError)
         {
-            
+            foreach (var item in selectedItems)
+            {
+                if (!item.NameOfLocal.Equals(".."))
+                {
+                    try
+                    {
+                        Delete(item.Id, item.NameOfLocal, ref workError);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Dropbox Access Error" + e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        workError = true;
+                    }
+                }
+            }
         }
-        public void MoveMultipleElement(List<Local> selectedItems, string destinationID)
+        public void MoveMultipleElement(List<Local> selectedItems,string sourceID, string destinationID,ref bool workError)
         {
             //csak Belül
+            foreach (var item in selectedItems)
+            {
+                if (!item.NameOfLocal.Equals(".."))
+                {
+                    try
+                    {
+                        Move(item.Id, destinationID, sourceID);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Dropbox Access Error" + e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        workError = true;
+                    }
+                }
+            }
         }
 
-        internal void Rename(string iD1, string nameOfLocal, string tempName)
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        internal void CreateNewDirectory(string iD1, string tempName)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
