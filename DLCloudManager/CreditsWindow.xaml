@@ -1,0 +1,17 @@
+﻿<Window x:Class="DLCloudManager.CreditsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DLCloudManager"
+        mc:Ignorable="d"
+        Title="Credits" Height="320.93" Width="484.302">
+    <Grid>
+        <Label Content="Author:" HorizontalAlignment="Left" Height="35" Margin="148,30,0,0" VerticalAlignment="Top" Width="129" FontStyle="Italic" FontWeight="Bold"/>
+        <Label Content="Lévai Dávid" HorizontalAlignment="Left" Height="35" Margin="195,65,0,0" VerticalAlignment="Top" Width="129"/>
+        <Label Content="Consultant:" HorizontalAlignment="Left" Height="35" Margin="148,100,0,0" VerticalAlignment="Top" Width="129" FontStyle="Italic" FontWeight="Bold"/>
+        <Label Content="Légrádi Gábor" HorizontalAlignment="Left" Height="35" Margin="195,140,0,0" VerticalAlignment="Top" Width="129"/>
+        <Label Content="Artist Group:" HorizontalAlignment="Left" Height="35" Margin="148,180,0,0" VerticalAlignment="Top" Width="129" FontStyle="Italic" FontWeight="Bold"/>
+        <Label Content="www.aha-soft.com" HorizontalAlignment="Left" Height="35" Margin="195,220,0,0" VerticalAlignment="Top" Width="129"/>
+    </Grid>
+</Window>

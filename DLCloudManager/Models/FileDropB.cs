@@ -56,7 +56,7 @@ namespace DLCloudManager.Models
                 {
                     string[] s = actualDir.Split('/');
                     string newActualDir = s[0];
-                    for (int i = 1; i < s.Length-2; i++)
+                    for (int i = 1; i < s.Length-1; i++)
                     {
                         newActualDir = newActualDir + "/" + s[i];
                     }

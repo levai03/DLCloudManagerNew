@@ -49,16 +49,17 @@
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File" IsTabStop="False">
                     <MenuItem Header="_TempPath" Command="{Binding Path=SelectTempPathCommand}"/>
-                    <MenuItem Header="_Close"/>
+                    <MenuItem Header="Scheduler" Command="{Binding Path=SchedulerCommand}"/>
+                    <MenuItem Header="_Close" Click="Close_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Edit" IsTabStop="False">
                     <MenuItem Name="Sys" Header="_System" IsCheckable="True" IsChecked="{Binding Path=SystemAttribute}"/>
                     <MenuItem Name="Hid" Header="_Hidden" IsCheckable="True" IsChecked="{Binding Path=HiddenAttribute}"/>
                     <MenuItem Name="ROy" Header="_ReadOnly" IsCheckable="True" IsChecked="{Binding Path=ReadOnlyAttribute}"/>
                 </MenuItem>
-                <MenuItem Header="_Add-ins" IsTabStop="False">
+                <MenuItem Header="_Add-ins" Click="PluginClick" IsTabStop="False">
                 </MenuItem>
-                <MenuItem Header="_Credits" IsTabStop="False">
+                <MenuItem Click="MenuItem_Click" Header="_Credits" IsTabStop="False">
                 </MenuItem>
                 <MenuItem Click="HelpMenuItem_Click" Header="_Help" IsTabStop="False">
                 </MenuItem>

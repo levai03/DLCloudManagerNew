@@ -33,43 +33,24 @@ namespace DLCloudManager
         public MainWindow()
         {
             viewModel = new MainViewModel();
-
-            
-            
-
-
-
-
             DataContext = viewModel;
             InitializeComponent();
             
 
-
-
-            //FileOneD d = new FileOneD();
-            //d.Starter();
-            //System.Timers.Timer timer = new System.Timers.Timer(30000);
-            //timer.Elapsed += proba;
-            //timer.Enabled=true;
-
         }
 
-        
+       
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //FileGoogleD FGD = new FileGoogleD();
-           // FGD.Starter();
-           // FGD.FileListingFull();
         }
 
 
 
 
-        private void proba(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            MessageBox.Show("jej");
-        }
-                
+        //private void proba(object sender, System.Timers.ElapsedEventArgs e)
+       // {
+            //MessageBox.Show("jej");
+       // }
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (((ListView)sender).Name.Equals("Lw1"))
@@ -149,22 +130,20 @@ namespace DLCloudManager
 
             }
         }
-        
-        
-        
-                
-                
-       
-        
-
-        
-
-        
-
-        private void Cp_Button_Click(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.WorkProgress = "Work in progress!";
-            
+            this.Close();
+        }
+        private void PluginClick(object sender, RoutedEventArgs e)
+        {
+            PluginWindow pw = new PluginWindow();
+            pw.ShowDialog();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            CreditsWindow cr = new CreditsWindow();
+            cr.ShowDialog();
         }
     }
 }

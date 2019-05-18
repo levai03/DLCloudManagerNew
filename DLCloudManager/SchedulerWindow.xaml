@@ -1,0 +1,17 @@
+﻿<Window x:Class="DLCloudManager.SchedulerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DLCloudManager"
+        mc:Ignorable="d"
+        Title="SchedulerWindow" Height="301.744" Width="479.069">
+    <Grid>
+        <Button Click="Button_Click_2" Content="Stop" HorizontalAlignment="Left" Height="30" Margin="281,143,0,0" VerticalAlignment="Top" Width="60"/>
+        <Button Click="Button_Click_1" Content="Cancle" HorizontalAlignment="Left" Height="30" Margin="168,203,0,0" VerticalAlignment="Top" Width="134"/>
+        <TextBox Name="Tx1" HorizontalAlignment="Left" Height="30" Margin="114,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="227"/>
+        <Label Content="Give us the time preiod that will backup the selected Items!" HorizontalAlignment="Left" Height="30" Margin="69,31,0,0" VerticalAlignment="Top" Width="433"/>
+        <Button Click="Button_Click" Content="Start" HorizontalAlignment="Left" Height="30" Margin="114,143,0,0" VerticalAlignment="Top" Width="74"/>
+
+    </Grid>
+</Window>

@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLCloudManager", "DLCloudManager\DLCloudManager.csproj", "{BBCF9CCC-FC91-4600-B622-DA04CBCB5FF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalShared", "InternalShared\InternalShared.csproj", "{21AA477E-787A-453C-AC22-6072476D0DBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginProject", "PluginProject\PluginProject.csproj", "{7CDC2E28-4DE8-4772-AFDB-E5A477CCB88B}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SETUP", "SETUP\SETUP.vdproj", "{2B00F644-4220-43AA-B96E-1086055C27DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,16 @@ Global
 		{BBCF9CCC-FC91-4600-B622-DA04CBCB5FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBCF9CCC-FC91-4600-B622-DA04CBCB5FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBCF9CCC-FC91-4600-B622-DA04CBCB5FF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21AA477E-787A-453C-AC22-6072476D0DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21AA477E-787A-453C-AC22-6072476D0DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21AA477E-787A-453C-AC22-6072476D0DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21AA477E-787A-453C-AC22-6072476D0DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CDC2E28-4DE8-4772-AFDB-E5A477CCB88B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CDC2E28-4DE8-4772-AFDB-E5A477CCB88B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CDC2E28-4DE8-4772-AFDB-E5A477CCB88B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CDC2E28-4DE8-4772-AFDB-E5A477CCB88B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B00F644-4220-43AA-B96E-1086055C27DC}.Debug|Any CPU.ActiveCfg = Debug
+		{2B00F644-4220-43AA-B96E-1086055C27DC}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

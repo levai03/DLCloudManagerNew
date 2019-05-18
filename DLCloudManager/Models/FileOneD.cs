@@ -11,24 +11,52 @@ namespace DLCloudManager.Models
 {
     class FileOneD
     {
-        public async void Starter()
+        //"7139ea72-31a7-4e53-a566-f38d04e942a5"
+        OneDriveClient oneDriveClient;
+        Item rootItem;
+        public async void Starter(string accessToken)
         {
             string[] scopes = new string[] { "onedrive.readonly", "wl.signin" };
-            var msaAuthenticationProvider = new MsaAuthenticationProvider(
-            "7139ea72-31a7-4e53-a566-f38d04e942a5",
+            var msaAuthenticationProvider = new MsaAuthenticationProvider(accessToken,
             "https://login.live.com/oauth20_desktop.srf",
             scopes);
             await msaAuthenticationProvider.AuthenticateUserAsync();
-            var oneDriveClient = new OneDriveClient(msaAuthenticationProvider);
+            oneDriveClient = new OneDriveClient(msaAuthenticationProvider);
 
-            var rootItem = await oneDriveClient
+            Getroot();
+            
+        }
+        async void Getroot()
+        {
+            rootItem = await oneDriveClient
                              .Drive
                              .Root
                              .Request()
                              .GetAsync();
-            Console.WriteLine(rootItem.Id);
         }
+        async void ListTask(string parentFolder, string token)
+        {/*
+            var list = await oneDriveClient.Drive.Items[parentFolder].Children.Request().GetAsync();
+            
 
+            IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute().Files;
+
+            List<Local> filelist = new List<Local>();
+            filelist.Add(new Local("", "", "..", "", "", ""));
+            if (files != null && files.Count > 0)
+            {
+                foreach (var file in files)
+                {
+                    filelist.Add(ChangeFileToLocal(file));
+                }
+            }*/
+
+        
+        
+
+        }
+        
+        
 
 
 
@@ -68,9 +96,14 @@ namespace DLCloudManager.Models
                 return currentList;
             }
         }
-        public async void Download()
+        public async void Download(string itemID)
         {
-
+            var contentStream = await oneDriveClient
+                              .Drive
+                              .Items[""]
+                              .Content
+                              .Request()
+                              .GetAsync();
         }
         public async void CopyMultipleElement(List<Local> selectedItems, string destinationID)
         {
@@ -83,26 +116,38 @@ namespace DLCloudManager.Models
         public void CopyMultipleElement(List<Local> selectedItems, string sourceID, string destinationID, bool noLocal)
         {
             //Copy
+
         }
 
         internal void MoveMultipleElement(List<Local> selectedItemList, string iD1)
         {
-            throw new NotImplementedException();
+            
         }
 
         internal void DeleteMultipleElement()
         {
-            throw new NotImplementedException();
+            
         }
 
         internal void Rename(string iD1, string nameOfLocal, string tempName)
-        {
-            throw new NotImplementedException();
+        {/*
+            var updateItem = new Item { ParentReference = new ItemReference { Id = newParentId } };
+            var itemWithUpdates = await oneDriveClient
+                                            .Drive
+                                            .Items[itemId]
+                                            .Request()
+                                            .UpdateAsync(updateItem);*/
         }
 
         internal void CreateNewDirectory(string iD1, string tempName)
-        {
-            throw new NotImplementedException();
+        {/*
+            var folderToCreate = new Item { Folder = new Folder() };
+            var createdFolder = await oneDriveClient
+                      .Drive
+                      .Items[itemId]
+                      .ItemWithPath("folder name")
+                      .Request()
+                      .CreateAsync(folderToCreate);*/
         }
     }
 }

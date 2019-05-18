@@ -10,6 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
+using System.Configuration;
 
 namespace DLCloudManager.ViewModels
 {
@@ -25,6 +27,7 @@ namespace DLCloudManager.ViewModels
         private readonly DelegateCommand _createDirectoryCommand;
         private readonly DelegateCommand _createTxtCommand;
         private readonly DelegateCommand _selectTempPathCommand;
+        private readonly DelegateCommand _schedulerCommand;
         public ICommand Listing1Command => _listing1Command;
         public ICommand Listing2Command => _listing2Command;
         public ICommand CopyCommand => _copyCommand;
@@ -34,14 +37,15 @@ namespace DLCloudManager.ViewModels
         public ICommand CreateDirectoryCommand => _createDirectoryCommand;
         public ICommand CreateTxtCommand => _createTxtCommand;
         public ICommand SelectTempPathCommand => _selectTempPathCommand;
+        public ICommand SchedulerCommand => _schedulerCommand;
         public MainViewModel()
         {
-            dropBoxToken = "Vp27yfQf79AAAAAAAAAACkn4rz-SxmpM1gVZPUff1tb952xqQ3JVViDNxAlfUhxl";
-            tempPath = "C:\\";
-            PrevDirectory1 = "C:\\";
-            ActualDirectory1 = "C:\\";
-            PrevDirectory2 = "C:\\";
-            ActualDirectory2 = "C:\\";
+            dropBoxToken = ConfigurationManager.AppSettings["droptoken"];
+            tempPath = ConfigurationManager.AppSettings["defaultroute"];
+            PrevDirectory1 = ConfigurationManager.AppSettings["defaultroute"];
+            ActualDirectory1 = ConfigurationManager.AppSettings["defaultroute"];
+            PrevDirectory2 = ConfigurationManager.AppSettings["defaultroute"];
+            ActualDirectory2 = ConfigurationManager.AppSettings["defaultroute"];
             FGD = new FileGoogleD();
             FOD = new FileOneD();
             FDB = new FileDropB();
@@ -56,6 +60,10 @@ namespace DLCloudManager.ViewModels
             normal2 = true;
             cloudPaths1 = new List<CloudType>();
             cloudPaths2 = new List<CloudType>();
+            saveddestDir = new List<Local>();
+            savedDestPath = "";
+            timer = new DispatcherTimer();
+            timer.Tick += timerScheduledMethod;
             _listing1Command = new DelegateCommand(OnListing1);
             _listing2Command = new DelegateCommand(OnListing2);
             _copyCommand = new DelegateCommand(OnCopy);
@@ -65,24 +73,31 @@ namespace DLCloudManager.ViewModels
             _createDirectoryCommand = new DelegateCommand(OnCreateNewDir);
             _createTxtCommand = new DelegateCommand(OnNewTxt);
             _selectTempPathCommand = new DelegateCommand(OnSelectTempPath);
-            
+            _schedulerCommand = new DelegateCommand(OnScheduler);
         }
 
         //Osztályszintű változók
+        DispatcherTimer timer;
         string dropBoxToken;
         List<Local> directories1 = new List<Local>();
         List<Local> directories2 = new List<Local>();
         List<Local> files1 = new List<Local>();
         List<Local> files2 = new List<Local>();
         string tempName;
+        bool tempBool;
         CreateDirWindow tempWindow;
         PathDialogWindow tempPathDialog;
+        SchedulerWindow tempSchedulerDialog;
         FileGoogleD FGD;
         FileOneD FOD;
         FileDropB FDB;
         List<CloudType> cloudPaths1;
         List<CloudType> cloudPaths2;
         string tempPath;
+        List<Local> savedItems;
+        List<Local> saveddestDir;
+        string savedDestPath;
+        long schedulRange;
 
         //Mezők
         List<FileAttributes> f;
@@ -490,7 +505,7 @@ namespace DLCloudManager.ViewModels
             {
                 if (normal2) //másolás local
                 {
-                    FileBasics.CopyMultipleElements(selectedItemList, filesAndDirectories2, actualDirectory2);
+                    FileBasics.CopyMultipleElements(selectedItemList, filesAndDirectories2, actualDirectory2, ref workError);
                 }
                 else if (GoogleDrive2) //feltöltés
                 {
@@ -520,14 +535,14 @@ namespace DLCloudManager.ViewModels
                     FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
                     FOD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                 }
                 else //Áttöltés Google - Drop
                 {
                     FGD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
                     FDB.CopyMultipleElementUpload(uploadItems, actualDirectory1, actualDirectory2, dropBoxToken, ref workError);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                 }
 
             }
@@ -542,7 +557,7 @@ namespace DLCloudManager.ViewModels
                     FOD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
                     FGD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1, true, ref workError);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                     
                 }
                 else if (OneDrive2) //másolás One
@@ -554,7 +569,7 @@ namespace DLCloudManager.ViewModels
                     FOD.CopyMultipleElement(selectedItemList, cloudPaths1.Last().ID1, tempPath);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
                     FDB.CopyMultipleElementUpload(uploadItems, tempPath, actualDirectory2, dropBoxToken, ref workError);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                 }
             }
             else
@@ -568,7 +583,7 @@ namespace DLCloudManager.ViewModels
                     FDB.CopyMultipleElement(selectedItemList, actualDirectory1, tempPath, dropBoxToken, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
                     FGD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1, true, ref workError);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
 
                 }
                 else if (OneDrive2) //Áttöltés Drop - One
@@ -576,7 +591,7 @@ namespace DLCloudManager.ViewModels
                     FDB.CopyMultipleElement(selectedItemList, actualDirectory1, actualDirectory2, dropBoxToken, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories1, ref files1, ref tempPath, F);
                     FOD.CopyMultipleElement(uploadItems, cloudPaths2.Last().ID1);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                 }
                 else //Másolás Drop
                 {
@@ -590,7 +605,7 @@ namespace DLCloudManager.ViewModels
             {
                 if (normal) //másolás local
                 {
-                    FileBasics.CopyMultipleElements(selectedItemList, filesAndDirectories1, actualDirectory1);
+                    FileBasics.CopyMultipleElements(selectedItemList, filesAndDirectories1, actualDirectory1, ref workError);
                 }
                 else if (GoogleDrive) //feltöltés
                 {
@@ -620,14 +635,14 @@ namespace DLCloudManager.ViewModels
                     FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
                     FOD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                 }
                 else //Áttöltés Google - Drop
                 {
                     FGD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
                     FDB.CopyMultipleElementUpload(selectedItemList,actualDirectory2,actualDirectory1,dropBoxToken,ref workError);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                 }
 
             }
@@ -642,7 +657,7 @@ namespace DLCloudManager.ViewModels
                     FOD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
                     FGD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1, true, ref workError);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
 
                 }
                 else if (OneDrive) //másolás One
@@ -654,7 +669,7 @@ namespace DLCloudManager.ViewModels
                     FOD.CopyMultipleElement(selectedItemList, cloudPaths2.Last().ID1, tempPath);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
                     FDB.CopyMultipleElementUpload(selectedItemList, actualDirectory2, actualDirectory1, dropBoxToken, ref workError);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                 }
             }
             else
@@ -669,7 +684,7 @@ namespace DLCloudManager.ViewModels
                     FileBasics.CreateNewDirectory(tempPath, "temp");
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
                     FGD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1, true, ref workError);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
 
                 }
                 else if (OneDrive) //Áttöltés Drop - One
@@ -677,7 +692,7 @@ namespace DLCloudManager.ViewModels
                     FDB.CopyMultipleElement(selectedItemList, actualDirectory2, actualDirectory1, dropBoxToken, ref workError);
                     List<Local> uploadItems = FileBasics.FullListing(ref tempPath, ref directories2, ref files2, ref tempPath, F);
                     FOD.CopyMultipleElement(uploadItems, cloudPaths1.Last().ID1);
-                    FileBasics.Delete(tempPath);
+                    FileBasics.Delete(tempPath, ref workError);
                 }
                 else //Másolás Drop
                 {
@@ -722,7 +737,7 @@ namespace DLCloudManager.ViewModels
                 {
                     if (normal && normal2 && !actualDirectory1.Equals(actualDirectory2))
                     {
-                        FileBasics.MoveMultipleElements(selectedItemList, filesAndDirectories2, actualDirectory2);
+                        FileBasics.MoveMultipleElements(selectedItemList, filesAndDirectories2, actualDirectory2, ref workError);
                     }
                     else if (googleDrive && googleDrive2 && !cloudPaths1.Last().ID1.Equals(cloudPaths2.Last().ID1))
                     {
@@ -746,7 +761,7 @@ namespace DLCloudManager.ViewModels
                 {
                     if (normal && normal2 && !actualDirectory1.Equals(actualDirectory2))
                     {
-                        FileBasics.MoveMultipleElements(selectedItemList, filesAndDirectories1, actualDirectory1);
+                        FileBasics.MoveMultipleElements(selectedItemList, filesAndDirectories1, actualDirectory1, ref workError);
                     }
                     else if (googleDrive && googleDrive2 && !cloudPaths1.Last().ID1.Equals(cloudPaths2.Last().ID1))
                     {
@@ -788,7 +803,7 @@ namespace DLCloudManager.ViewModels
                 {
                     if (normal)
                     {
-                        FileBasics.DeleteMultipleElement(selectedItemList);
+                        FileBasics.DeleteMultipleElement(selectedItemList, ref workError);
                     }
                     else if (googleDrive)
                     {
@@ -808,7 +823,7 @@ namespace DLCloudManager.ViewModels
                 {
                     if (normal2)
                     {
-                        FileBasics.DeleteMultipleElement(selectedItemList);
+                        FileBasics.DeleteMultipleElement(selectedItemList, ref workError);
                     }
                     else if (googleDrive2)
                     {
@@ -980,10 +995,7 @@ namespace DLCloudManager.ViewModels
                 ActualDirectory2 = "Drives";
             }
         }
-        /*private void OnProgressStart(object commandParametere)
-        {
-            WorkProgress = "Work in progress!";
-        }*/
+        
 
         //Segéd metódusok
         private void NameAdded(object sender, EventArgs e)
@@ -996,6 +1008,30 @@ namespace DLCloudManager.ViewModels
         private void PathAdded(object sender, EventArgs e)
         {
             tempName = tempPathDialog.TempPath;
+        }
+        private void TimerStart(object sender, EventArgs e)
+        {
+            if (normal && normal2)
+            {
+                savedItems = selectedItemList;
+                if (activeListview == 1)
+                {
+                    saveddestDir = directories2;
+                    savedDestPath = actualDirectory2;
+                }
+                else
+                {
+                    saveddestDir = directories1;
+                    savedDestPath = actualDirectory2;
+                }
+                int t = tempSchedulerDialog.TempTime;
+                timer.Interval = new TimeSpan(0, t, 0);
+                timer.Start();
+            }
+        }
+        private void TimerStop(object sender, EventArgs e)
+        {
+            timer.Stop();
         }
         private void ProgressStatus(bool WorkError)
         {
@@ -1019,8 +1055,25 @@ namespace DLCloudManager.ViewModels
                 tempPath = tempName + "\\temp";
             }
         }
+        public void OnScheduler(object commandParameter)
+        {
+            tempBool = false;
+            tempSchedulerDialog = new SchedulerWindow();
+            tempSchedulerDialog.StartClicked += new EventHandler(TimerStart);
+            tempSchedulerDialog.StopClicked += new EventHandler(TimerStop);
+            tempSchedulerDialog.ShowDialog();
+        }
+        private void timerScheduledMethod(object sender, EventArgs e)
+        {
+            bool worke = false;
+            FileBasics.CopyMultipleElements(savedItems, saveddestDir, savedDestPath, ref worke);
+            
+        }
 
-        //Tulajdonság figyelő
+
+
+
+       //Tulajdonság figyelő
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
         {

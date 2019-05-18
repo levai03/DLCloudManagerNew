@@ -228,7 +228,7 @@ namespace DLCloudManager.Models
             }
 
         }
-        static public void CopyMultipleElements(List<Local> selectedSourceItems, List<Local> destinationItems, string destinationDir)
+        static public void CopyMultipleElements(List<Local> selectedSourceItems, List<Local> destinationItems, string destinationDir, ref bool workerror)
         {
             bool overwriteable = true;
             bool existingElement = false;
@@ -265,11 +265,12 @@ namespace DLCloudManager.Models
 
                 catch (UnauthorizedAccessException)
                 {
+                    workerror = true;
                     MessageBox.Show("Access Denied", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
-        static public void Move(string source, string name, string destination, Boolean overwriteable)
+        static public void Move(string source, string name, string destination, Boolean overwriteable, ref bool workerror)
         {
 
             string target = System.IO.Path.Combine(destination, name);
@@ -286,12 +287,12 @@ namespace DLCloudManager.Models
                     DirectoryInfo[] tempdirlist = tempsource.GetDirectories();
                     foreach (DirectoryInfo i in tempdirlist)
                     {
-                        Move(i.FullName, i.Name, target, overwriteable);
+                        Move(i.FullName, i.Name, target, overwriteable, ref workerror);
                     }
                     FileInfo[] tempfilelist = tempsource.GetFiles();
                     foreach (FileInfo f in tempfilelist)
                     {
-                        Move(f.FullName, f.Name, target, overwriteable);
+                        Move(f.FullName, f.Name, target, overwriteable, ref workerror);
                     }
                     tempsource.Delete(true);
 
@@ -304,12 +305,12 @@ namespace DLCloudManager.Models
                     DirectoryInfo[] tempdirlist = tempsource.GetDirectories();
                     foreach (DirectoryInfo i in tempdirlist)
                     {
-                        Move(i.FullName, i.Name, target, overwriteable);
+                        Move(i.FullName, i.Name, target, overwriteable, ref workerror);
                     }
                     FileInfo[] tempfilelist = tempsource.GetFiles();
                     foreach (FileInfo f in tempfilelist)
                     {
-                        Move(f.FullName, f.Name, target, overwriteable);
+                        Move(f.FullName, f.Name, target, overwriteable, ref workerror);
                     }
                     tempsource.Delete(true);
                 }
@@ -344,7 +345,7 @@ namespace DLCloudManager.Models
 
             }
         }
-        static public void MoveMultipleElements(List<Local> selectedSourceItems, List<Local> destinationItems, string destinationDir)
+        static public void MoveMultipleElements(List<Local> selectedSourceItems, List<Local> destinationItems, string destinationDir, ref bool workerror)
         {
             bool overwriteable = false;
             bool existingElement = false;
@@ -374,7 +375,7 @@ namespace DLCloudManager.Models
             {
                 try
                 {
-                    FileBasics.Move(item.PathOfLocal, item.NameOfLocal, destinationDir, overwriteable);
+                    FileBasics.Move(item.PathOfLocal, item.NameOfLocal, destinationDir, overwriteable, ref workerror);
                 }
                 catch (UnauthorizedAccessException)
                 {
@@ -382,7 +383,7 @@ namespace DLCloudManager.Models
                 }
             }
         }
-        static public void Delete(string source)
+        static public void Delete(string source, ref bool workerror)
         {
 
             FileInfo fi = new FileInfo(source);
@@ -395,6 +396,7 @@ namespace DLCloudManager.Models
                 }
                 catch (UnauthorizedAccessException)
                 {
+                    workerror = true;
                     MessageBox.Show("Access Denied", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
@@ -406,11 +408,12 @@ namespace DLCloudManager.Models
                 }
                 catch (UnauthorizedAccessException)
                 {
+                    workerror = true;
                     MessageBox.Show("Access Denied", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
-        static public void DeleteMultipleElement(List<Local> selectedSourceItems)
+        static public void DeleteMultipleElement(List<Local> selectedSourceItems, ref bool workerror)
         {
             MessageBoxResult r = MessageBox.Show("Do you really want to delete the selected items?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
             if (r == MessageBoxResult.Yes)
@@ -418,7 +421,7 @@ namespace DLCloudManager.Models
                 foreach (Local item in selectedSourceItems)
                 {
 
-                    FileBasics.Delete(item.PathOfLocal);
+                    FileBasics.Delete(item.PathOfLocal, ref workerror);
                 }
             }
         }
